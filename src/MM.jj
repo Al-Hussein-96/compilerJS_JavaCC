@@ -44,13 +44,8 @@ TOKEN :
 | < ABS : "abs" >
 | < POWER : "**" >
 | < Fact : "!" >
-| < LOGICAL :
-    "<"
-  | ">"
-  | "<="
-  | ">="
-  | "=="
-  | "!=" >
+| < LOGICAL : "<" | ">"| "<="| ">="| "=="| "!=" >
+| < ALLASSIGN :"+="| "-="| "*="| "/=" >   
 | < ASSIGN : "=" >
 | < SEMI : ";" >
 | < COLON : ":" >
@@ -60,11 +55,8 @@ TOKEN :
 | < ARROW : "->" >
 | < WHILE : "while" >
 | < READ : ">>" >
-| < PRINT :
-    "console.log"
-  | "print" >
-| 
-  < VAR_ : "var" >
+| < PRINT : "console.log"| "print" >
+| < VAR_ : "var" >
 }
 
 TOKEN :
@@ -73,45 +65,17 @@ TOKEN :
 | < RP : ")" >
 | < LB : "{" >
 | < RB : "}" >
-| < NUM :
-    ([ "0"-"9" ])+
-    (
-      "." ([ "0"-"9" ])+
-    )?
-    (
-      (
-        "e"
-      | "E"
-      )
-      (
-        "+"
-      | "-"
-      )?
-      ([ "0"-"9" ])+
-    )? >
-| < VAR :
-    (
-      [ "a"-"z" ]
-    | [ "A"-"Z" ]
-    | [ "$" ]
-    | [ "_" ]
-    )
-    (
-      [ "a"-"z" ]
-    | [ "A"-"Z" ]
-    | [ "0"-"9" ]
-    | [ "$" ]
-    | [ "_" ]
-    )* >
+| < NUM: (["0"-"9"])+("."(["0"-"9"])+)?(("e"|"E")("+"|"-")?(["0"-"9"])+)? >                                                                                                                                                                                                                                                                                                                                                                                                     
+| < VAR :( [ "a"-"z" ] | [ "A"-"Z" ]| [ "$" ]| [ "_" ] )([ "a"-"z" ]| [ "A"-"Z" ] | [ "0"-"9" ]| [ "$" ]| [ "_" ])* >
 }
 
 TOKEN :
 {
-  < INCR : "++" >
- |  < DECR : "--" >
- |  < PLUSASSIGN : "+=">
- |  <MINUSASSIGN:	"-=">
- |  <MULTASSIGN:	"*=">
+   < INCR : "++" >
+ |  <DECR : "--" >
+ |  <PLUSASSIGN : "+=">
+ |  <MINUSASSIGN: "-=">
+ |  <MULTASSIGN: "*=">
  |  <DIVASSIGN:	"/=">
  |  <REMASSIGN:	"%=">
 
@@ -199,6 +163,16 @@ BlockNode Declaration() :
     SyntaxTreeNode n = null;
 }
 {
+    (
+  (
+    n=assignstmt()
+    {
+      b.addChild(n);
+    }
+    ";"
+   )
+   
+| (
     < VAR_ >
     n=Variable()
     {
@@ -210,6 +184,7 @@ BlockNode Declaration() :
      }
     )*
     ";"
+  )    )
     {
      return b;
     }
@@ -218,15 +193,14 @@ BlockNode Declaration() :
 AssignNode Variable() :
 {
     AssignNode res = new AssignNode();
-	Token t;
+    Token t1 ,t2;
 	SyntaxTreeNode n = null;
 }
 {
-	t=< VAR > ( < ASSIGN > n=E() )?
+	t1=< VAR > ( t2 = < ASSIGN > {res.setOp(t2.image); } n=E() { res.addChild(n); } )?
     {
-	    res.setVariable(t.image);
-	    res.addChild(n);
-	    return res;
+	    res.setVariable(t1.image);
+  	    return res;
     }
 }
 
@@ -234,15 +208,13 @@ AssignNode assignstmt() :
 {
   AssignNode res = new AssignNode();
   SyntaxTreeNode n;
-  Token t;
+  Token t1 ,t2;
 }
 {
-  (
-  < VAR_ >
-  )? 
-  t = < VAR > < ASSIGN > n = E() < SEMI >
+  t1 = < VAR > (t2 = < ALLASSIGN >) n = E() 
   {
-    res.setVariable(t.image);
+    res.setVariable(t1.image);
+	res.setOp(t2.image);
     res.addChild(n);
     return res;
   }

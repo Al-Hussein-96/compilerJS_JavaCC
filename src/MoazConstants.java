@@ -33,53 +33,55 @@ public interface MoazConstants {
   /** RegularExpression Id. */
   int LOGICAL = 16;
   /** RegularExpression Id. */
-  int ASSIGN = 17;
+  int ALLASSIGN = 17;
   /** RegularExpression Id. */
-  int SEMI = 18;
+  int ASSIGN = 18;
   /** RegularExpression Id. */
-  int COLON = 19;
+  int SEMI = 19;
   /** RegularExpression Id. */
-  int IF = 20;
+  int COLON = 20;
   /** RegularExpression Id. */
-  int ELSE = 21;
+  int IF = 21;
   /** RegularExpression Id. */
-  int FOR = 22;
+  int ELSE = 22;
   /** RegularExpression Id. */
-  int ARROW = 23;
+  int FOR = 23;
   /** RegularExpression Id. */
-  int WHILE = 24;
+  int ARROW = 24;
   /** RegularExpression Id. */
-  int READ = 25;
+  int WHILE = 25;
   /** RegularExpression Id. */
-  int PRINT = 26;
+  int READ = 26;
   /** RegularExpression Id. */
-  int VAR_ = 27;
+  int PRINT = 27;
   /** RegularExpression Id. */
-  int LP = 28;
+  int VAR_ = 28;
   /** RegularExpression Id. */
-  int RP = 29;
+  int LP = 29;
   /** RegularExpression Id. */
-  int LB = 30;
+  int RP = 30;
   /** RegularExpression Id. */
-  int RB = 31;
+  int LB = 31;
   /** RegularExpression Id. */
-  int NUM = 32;
+  int RB = 32;
   /** RegularExpression Id. */
-  int VAR = 33;
+  int NUM = 33;
   /** RegularExpression Id. */
-  int INCR = 34;
+  int VAR = 34;
   /** RegularExpression Id. */
-  int DECR = 35;
+  int INCR = 35;
   /** RegularExpression Id. */
-  int PLUSASSIGN = 36;
+  int DECR = 36;
   /** RegularExpression Id. */
-  int MINUSASSIGN = 37;
+  int PLUSASSIGN = 37;
   /** RegularExpression Id. */
-  int MULTASSIGN = 38;
+  int MINUSASSIGN = 38;
   /** RegularExpression Id. */
-  int DIVASSIGN = 39;
+  int MULTASSIGN = 39;
   /** RegularExpression Id. */
-  int REMASSIGN = 40;
+  int DIVASSIGN = 40;
+  /** RegularExpression Id. */
+  int REMASSIGN = 41;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -103,6 +105,7 @@ public interface MoazConstants {
     "\"**\"",
     "\"!\"",
     "<LOGICAL>",
+    "<ALLASSIGN>",
     "\"=\"",
     "\";\"",
     "\":\"",

@@ -30,6 +30,7 @@ public class Moaz implements MoazConstants {
       case WHILE:
       case PRINT:
       case VAR_:
+      case VAR:
         ;
         break;
       default:
@@ -45,6 +46,7 @@ public class Moaz implements MoazConstants {
   SyntaxTreeNode n;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case VAR_:
+    case VAR:
       n = Declaration();
       break;
     case FOR:
@@ -98,44 +100,58 @@ public class Moaz implements MoazConstants {
   static final public BlockNode Declaration() throws ParseException {
         BlockNode b = new BlockNode();
     SyntaxTreeNode n = null;
-    jj_consume_token(VAR_);
-    n = Variable();
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case VAR:
+      n = assignstmt();
       b.addChild(n);
-    label_2:
-    while (true) {
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case 41:
-        ;
-        break;
-      default:
-        jj_la1[2] = jj_gen;
-        break label_2;
-      }
-      jj_consume_token(41);
+      jj_consume_token(SEMI);
+      break;
+    case VAR_:
+      jj_consume_token(VAR_);
       n = Variable();
+      b.addChild(n);
+      label_2:
+      while (true) {
+        switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+        case 42:
+          ;
+          break;
+        default:
+          jj_la1[2] = jj_gen;
+          break label_2;
+        }
+        jj_consume_token(42);
+        n = Variable();
          b.addChild(n);
+      }
+      jj_consume_token(SEMI);
+      break;
+    default:
+      jj_la1[3] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
     }
-    jj_consume_token(SEMI);
      {if (true) return b;}
     throw new Error("Missing return statement in function");
   }
 
   static final public AssignNode Variable() throws ParseException {
     AssignNode res = new AssignNode();
-        Token t;
+    Token t1 ,t2;
         SyntaxTreeNode n = null;
-    t = jj_consume_token(VAR);
+    t1 = jj_consume_token(VAR);
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case ASSIGN:
-      jj_consume_token(ASSIGN);
+      t2 = jj_consume_token(ASSIGN);
+                                      res.setOp(t2.image);
       n = E();
+                                                                     res.addChild(n);
       break;
     default:
-      jj_la1[3] = jj_gen;
+      jj_la1[4] = jj_gen;
       ;
     }
-            res.setVariable(t.image);
-            res.addChild(n);
+            res.setVariable(t1.image);
             {if (true) return res;}
     throw new Error("Missing return statement in function");
   }
@@ -143,20 +159,12 @@ public class Moaz implements MoazConstants {
   static final public AssignNode assignstmt() throws ParseException {
   AssignNode res = new AssignNode();
   SyntaxTreeNode n;
-  Token t;
-    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case VAR_:
-      jj_consume_token(VAR_);
-      break;
-    default:
-      jj_la1[4] = jj_gen;
-      ;
-    }
-    t = jj_consume_token(VAR);
-    jj_consume_token(ASSIGN);
+  Token t1 ,t2;
+    t1 = jj_consume_token(VAR);
+    t2 = jj_consume_token(ALLASSIGN);
     n = E();
-    jj_consume_token(SEMI);
-    res.setVariable(t.image);
+    res.setVariable(t1.image);
+        res.setOp(t2.image);
     res.addChild(n);
     {if (true) return res;}
     throw new Error("Missing return statement in function");
@@ -194,6 +202,7 @@ public class Moaz implements MoazConstants {
     case WHILE:
     case PRINT:
     case VAR_:
+    case VAR:
       c4 = SingleOP();
       break;
     default:
@@ -230,6 +239,7 @@ public class Moaz implements MoazConstants {
     case WHILE:
     case PRINT:
     case VAR_:
+    case VAR:
       c = SingleOP();
       break;
     default:
@@ -266,6 +276,7 @@ public class Moaz implements MoazConstants {
     case WHILE:
     case PRINT:
     case VAR_:
+    case VAR:
       c = SingleOP();
       break;
     default:
@@ -288,6 +299,7 @@ public class Moaz implements MoazConstants {
       case WHILE:
       case PRINT:
       case VAR_:
+      case VAR:
         c = SingleOP();
         break;
       default:
@@ -443,10 +455,10 @@ public class Moaz implements MoazConstants {
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0xd500000,0xd500000,0x0,0x20000,0x8000000,0x4d500000,0x4d500000,0x4d500000,0x4d500000,0x200000,0x60,0x60,0x180,0x180,0x10000000,};
+      jj_la1_0 = new int[] {0x1aa00000,0x1aa00000,0x0,0x10000000,0x40000,0x9aa00000,0x9aa00000,0x9aa00000,0x9aa00000,0x400000,0x60,0x60,0x180,0x180,0x20000000,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x0,0x0,0x200,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x3,};
+      jj_la1_1 = new int[] {0x4,0x4,0x400,0x4,0x0,0x4,0x4,0x4,0x4,0x0,0x0,0x0,0x0,0x0,0x6,};
    }
 
   /** Constructor with InputStream. */
@@ -584,7 +596,7 @@ public class Moaz implements MoazConstants {
   /** Generate ParseException. */
   static public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[42];
+    boolean[] la1tokens = new boolean[43];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -601,7 +613,7 @@ public class Moaz implements MoazConstants {
         }
       }
     }
-    for (int i = 0; i < 42; i++) {
+    for (int i = 0; i < 43; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
