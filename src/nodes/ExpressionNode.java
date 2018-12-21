@@ -4,7 +4,20 @@ public class ExpressionNode extends SyntaxTreeNode {
 
 	String operator;
 	
+	public ExpressionNode(String operator ,SyntaxTreeNode child1 , SyntaxTreeNode child2 )
+	{
+		this.operator = operator;
+		children.add(child1);
+		children.add(child2);
+	}
 	
+	public ExpressionNode(String operator ,SyntaxTreeNode child1 , SyntaxTreeNode child2  , SyntaxTreeNode child3)
+	{
+		this.operator = operator;
+		children.add(child1);
+		children.add(child2);
+		children.add(child3);
+	}
 	public String getOperator() {
 		return operator;
 	}
@@ -28,6 +41,39 @@ public class ExpressionNode extends SyntaxTreeNode {
 			return d1 * d2;
 		case "/":
 			return d1 / d2;
+		case "%" : 
+			return d1%d2;
+		case "<<":
+			return (d1<<d2);
+		case ">>":
+			return (d1>>d2);
+		case ">>>":
+			return (d1>>>d2);
+		case "<":
+			return (d1<d2);
+		case ">":
+			return (d1>d2);
+		case "<=":
+			return (d1<=d2);
+		case ">=":
+			return (d1>=d2);
+		case "==":
+			return (d1==d2);
+		case "!=":
+			return (d1!=d2);
+		case "&":
+			return (d1&d2);
+		case "^":
+			return (d1^d2);
+		case "|":
+			return (d1|d2);
+		case "&&":
+			return (d1&&d2);
+		case "||":
+			return (d1||d2);
+		case "?":
+			double d3 = (Double)children.get(2).execute(context);
+			return (d1 ? d2 : d3);
 		}
 		return null;
 	}

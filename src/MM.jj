@@ -340,8 +340,261 @@ IfNode ifstmt() :
 //  return n1;
 //}
 
-
+/*
 ExpressionNode E() :
+{
+	Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+}
+{
+  e=AssignmentExpression()
+  (
+  	t="," e2=AssignmentExpression()
+    														{
+                                	e = new ExpressionNode( t, e, e2);
+                                }
+  )*
+                                {
+                                  return e;
+                                }
+}
+
+
+JSExpression AssignmentExpression() :
+{
+	Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+}
+{
+  e=ConditionalExpression()
+  (
+  	( t="=" | t="&&=" | t="||=" | t="+=" | t="-=" | t="*=" | t="/=" | t="&=" | t="|=" | t="^=" | t="%=" | t="<<=" | t=">>=" | t=">>>=" )
+    e2=ConditionalExpression()
+    														{
+                                	e = new ExpressionNode( t, e, e2);
+                                }
+  )*
+                                {
+                                  return e;
+                                }
+}
+*/
+ExpressionNode E() :
+{
+	Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+  ExpressionNode e3;
+}
+{
+  e=OrExpression()
+  (
+  	t="?" e2=E() ":" e3=E()
+    														{
+                                	e = new ExpressionNode( t, e, e2, e3);
+                                }
+  )?
+                                {
+                                  return e;
+                                }
+}
+
+ExpressionNode OrExpression() :
+{
+	Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+}
+{
+  e=AndExpression()
+  (
+  	t="||" e2=AndExpression()
+    														{
+                                	e = new ExpressionNode( t, e, e2);
+                                }
+  )*
+                                {
+                                  return e;
+                                }
+}
+
+ExpressionNode AndExpression() :
+{
+	Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+}
+{
+  e=BitwiseOrExpression()
+  (
+  	t="&&" e2=BitwiseOrExpression()
+    														{
+                                	e = new ExpressionNode( t, e, e2);
+                                }
+  )*
+                                {
+                                  return e;
+                                }
+}
+
+ExpressionNode BitwiseOrExpression() :
+{
+	Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+}
+{
+  e=BitwiseXorExpression()
+  (
+  	t="|" e2=BitwiseXorExpression()
+    														{
+                                	e = new ExpressionNode( t, e, e2);
+                                }
+  )*
+                                {
+                                  return e;
+                                }
+}
+
+ExpressionNode BitwiseXorExpression() :
+{
+	Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+}
+{
+  e=BitwiseAndExpression()
+  (
+  	t="^" e2=BitwiseAndExpression()
+    														{
+                                	e = new ExpressionNode( t, e, e2);
+                                }
+  )*
+                                {
+                                  return e;
+                                }
+}
+
+ExpressionNode BitwiseAndExpression() :
+{
+	Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+}
+{
+  e=EqualityExpression()
+  (
+  	t="&" e2=EqualityExpression()
+    														{
+                                	e = new ExpressionNode( t, e, e2);
+                                }
+  )*
+                                {
+                                  return e;
+                                }
+}
+
+ExpressionNode EqualityExpression() :
+{
+	Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+}
+{
+  e=RelationalExpression()
+  (
+  	( t="==" | t="!=" ) e2=RelationalExpression()
+    														{
+                                	e = new ExpressionNode( t, e, e2);
+                                }
+  )*
+                                {
+                                  return e;
+                                }
+}
+
+ExpressionNode RelationalExpression() :
+{
+	Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+}
+{
+  e=ShiftExpression()
+  (
+  	( t="<" | t=">" | t="<=" | t=">=" ) e2=ShiftExpression()
+    														{
+                                	e = new ExpressionNode( t, e, e2);
+                                }
+  )*
+                                {
+                                  return e;
+                                }
+}
+
+ExpressionNode ShiftExpression() :
+{
+	Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+}
+{
+  e=AdditiveExpression()
+  (
+  	( t="<<" | t=">>" | t=">>>" ) e2=AdditiveExpression()
+    														{
+                                	e = new ExpressionNode( t, e, e2);
+                                }
+  )*
+                                {
+                                  return e;
+                                }
+}
+
+ExpressionNode AdditiveExpression() :
+{
+	Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+}
+{
+  e=MultiplicativeExpression()
+  (
+  	( t="+" | t="-" ) e2=MultiplicativeExpression()
+    														{
+                                	e = new ExpressionNode( t, e, e2);
+                                }
+  )*
+                                {
+                                  return e;
+                                }
+}
+
+ExpressionNode MultiplicativeExpression() :
+{
+	Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2 = null;
+}
+{
+  e=N()
+  (
+  	( t="*" | t="/" | t="%" ) e2=N()
+    														{
+                                	e = new ExpressionNode( t, e, e2);
+                                }
+  )*
+                                {
+                                  
+                                  return e;
+                                }
+}
+
+
+
+ExpressionNode last_E() :
 {
   ExpressionNode n1, n2 = null;
   Token t = null;
@@ -396,6 +649,8 @@ ExpressionNode F() :
     }
   }
 }
+
+
 
 ExpressionNode N() :
 {
