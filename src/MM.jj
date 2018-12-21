@@ -44,7 +44,7 @@ TOKEN :
 | < ABS : "abs" >
 | < POWER : "**" >
 | < Fact : "!" >
-| < LOGICAL : "<" | ">"| "<="| ">="| "=="| "!=" >
+//| < LOGICAL : "<" | ">"| "<="| ">="| "=="| "!=" >
 | < ALLASSIGN :"+="| "-="| "*="| "/=" >   
 | < ASSIGN : "=" >
 | < SEMI : ";" >
@@ -141,7 +141,7 @@ WriteNode printstmt() :
     return res;
   }
 }
-
+/*
 ConditionNode condition() :
 {
   ConditionNode res = new ConditionNode();
@@ -157,6 +157,7 @@ ConditionNode condition() :
     return res;
   }
 }
+*/
 BlockNode Declaration() :
 {
 	BlockNode b = new BlockNode();
@@ -235,7 +236,7 @@ ForNode forstmt() :
 }
 {
   (
-    < FOR >  < LP > c1 = assignstmt() c2 = condition() < SEMI > c3 = E()  < RP >
+    < FOR >  < LP > c1 = assignstmt() c2 = E() < SEMI > c3 = E()  < RP >
     {
       res.addChild(c1);
       res.addChild(c2);
@@ -266,7 +267,7 @@ WhileNode whilestmt() :
 }
 {
   (
-    < WHILE > < LP > c = condition() < RP >
+    < WHILE > < LP > c = E() < RP >
     {
       res.addChild(c);
     }
@@ -296,7 +297,7 @@ IfNode ifstmt() :
 }
 {
   (
-    < IF > < LP > c = condition() < RP >
+    < IF > < LP > c = E() < RP >
     {
       res.addChild(c);
     }
@@ -393,7 +394,7 @@ ExpressionNode E() :
   (
   	t="?" e2=E() ":" e3=E()
     														{
-                                	e = new ExpressionNode( t, e, e2, e3);
+                                	e = new ExpressionNode( t.image, e, e2, e3);
                                 }
   )?
                                 {
@@ -412,7 +413,7 @@ ExpressionNode OrExpression() :
   (
   	t="||" e2=AndExpression()
     														{
-                                	e = new ExpressionNode( t, e, e2);
+                                	e = new ExpressionNode( t.image, e, e2);
                                 }
   )*
                                 {
@@ -431,7 +432,7 @@ ExpressionNode AndExpression() :
   (
   	t="&&" e2=BitwiseOrExpression()
     														{
-                                	e = new ExpressionNode( t, e, e2);
+                                	e = new ExpressionNode( t.image, e, e2);
                                 }
   )*
                                 {
@@ -450,7 +451,7 @@ ExpressionNode BitwiseOrExpression() :
   (
   	t="|" e2=BitwiseXorExpression()
     														{
-                                	e = new ExpressionNode( t, e, e2);
+                                	e = new ExpressionNode( t.image, e, e2);
                                 }
   )*
                                 {
@@ -469,7 +470,7 @@ ExpressionNode BitwiseXorExpression() :
   (
   	t="^" e2=BitwiseAndExpression()
     														{
-                                	e = new ExpressionNode( t, e, e2);
+                                	e = new ExpressionNode( t.image, e, e2);
                                 }
   )*
                                 {
@@ -488,7 +489,7 @@ ExpressionNode BitwiseAndExpression() :
   (
   	t="&" e2=EqualityExpression()
     														{
-                                	e = new ExpressionNode( t, e, e2);
+                                	e = new ExpressionNode( t.image, e, e2);
                                 }
   )*
                                 {
@@ -507,7 +508,7 @@ ExpressionNode EqualityExpression() :
   (
   	( t="==" | t="!=" ) e2=RelationalExpression()
     														{
-                                	e = new ExpressionNode( t, e, e2);
+                                	e = new ExpressionNode( t.image, e, e2);
                                 }
   )*
                                 {
@@ -526,7 +527,7 @@ ExpressionNode RelationalExpression() :
   (
   	( t="<" | t=">" | t="<=" | t=">=" ) e2=ShiftExpression()
     														{
-                                	e = new ExpressionNode( t, e, e2);
+                                	e = new ExpressionNode( t.image, e, e2);
                                 }
   )*
                                 {
@@ -545,7 +546,7 @@ ExpressionNode ShiftExpression() :
   (
   	( t="<<" | t=">>" | t=">>>" ) e2=AdditiveExpression()
     														{
-                                	e = new ExpressionNode( t, e, e2);
+                                	e = new ExpressionNode( t.image, e, e2);
                                 }
   )*
                                 {
@@ -564,7 +565,7 @@ ExpressionNode AdditiveExpression() :
   (
   	( t="+" | t="-" ) e2=MultiplicativeExpression()
     														{
-                                	e = new ExpressionNode( t, e, e2);
+                                	e = new ExpressionNode( t.image, e, e2);
                                 }
   )*
                                 {
@@ -583,7 +584,7 @@ ExpressionNode MultiplicativeExpression() :
   (
   	( t="*" | t="/" | t="%" ) e2=N()
     														{
-                                	e = new ExpressionNode( t, e, e2);
+                                	e = new ExpressionNode( t.image, e, e2);
                                 }
   )*
                                 {
@@ -592,7 +593,7 @@ ExpressionNode MultiplicativeExpression() :
                                 }
 }
 
-
+/*
 
 ExpressionNode last_E() :
 {
@@ -650,7 +651,7 @@ ExpressionNode F() :
   }
 }
 
-
+*/
 
 ExpressionNode N() :
 {

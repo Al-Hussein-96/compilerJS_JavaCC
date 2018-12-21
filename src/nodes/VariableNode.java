@@ -2,6 +2,14 @@ package nodes;
 
 public class VariableNode extends ExpressionNode {
 
+	public VariableNode() {
+		// TODO Auto-generated constructor stub
+	}
+	public VariableNode(String operator, SyntaxTreeNode child1, SyntaxTreeNode child2) {
+		super(operator, child1, child2);
+		// TODO Auto-generated constructor stub
+	}
+
 	String name;
 
 	@Override

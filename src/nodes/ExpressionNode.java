@@ -4,6 +4,10 @@ public class ExpressionNode extends SyntaxTreeNode {
 
 	String operator;
 	
+	public ExpressionNode() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public ExpressionNode(String operator ,SyntaxTreeNode child1 , SyntaxTreeNode child2 )
 	{
 		this.operator = operator;
@@ -44,11 +48,11 @@ public class ExpressionNode extends SyntaxTreeNode {
 		case "%" : 
 			return d1%d2;
 		case "<<":
-			return (d1<<d2);
+			return ((int)d1<<(int)d2);
 		case ">>":
-			return (d1>>d2);
+			return ((int)d1>>(int)d2);
 		case ">>>":
-			return (d1>>>d2);
+			return ((int)d1>>>(int)d2);
 		case "<":
 			return (d1<d2);
 		case ">":
@@ -62,18 +66,18 @@ public class ExpressionNode extends SyntaxTreeNode {
 		case "!=":
 			return (d1!=d2);
 		case "&":
-			return (d1&d2);
+			return ((int)d1&(int)d2);
 		case "^":
-			return (d1^d2);
+			return ((int)d1^(int)d2);
 		case "|":
-			return (d1|d2);
+			return ((int)d1|(int)d2);
 		case "&&":
-			return (d1&&d2);
+	//		return (d1&&d2);
 		case "||":
-			return (d1||d2);
+	//		return (d1||d2);
 		case "?":
 			double d3 = (Double)children.get(2).execute(context);
-			return (d1 ? d2 : d3);
+	//		return (d1 ? d2 : d3);
 		}
 		return null;
 	}

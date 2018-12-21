@@ -83,20 +83,23 @@ public class Moaz implements MoazConstants {
     throw new Error("Missing return statement in function");
   }
 
-  static final public ConditionNode condition() throws ParseException {
+/*
+ConditionNode condition() :
+{
   ConditionNode res = new ConditionNode();
   Token t;
   SyntaxTreeNode n1, n2;
-    n1 = E();
-    t = jj_consume_token(LOGICAL);
-    n2 = E();
+}
+{
+  n1 = E() t = < LOGICAL > n2 = E()
+  {
     res.setOperator(t.image);
     res.addChild(n1);
     res.addChild(n2);
-    {if (true) return res;}
-    throw new Error("Missing return statement in function");
+    return res;
   }
-
+}
+*/
   static final public BlockNode Declaration() throws ParseException {
         BlockNode b = new BlockNode();
     SyntaxTreeNode n = null;
@@ -113,14 +116,14 @@ public class Moaz implements MoazConstants {
       label_2:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case 42:
+        case 41:
           ;
           break;
         default:
           jj_la1[2] = jj_gen;
           break label_2;
         }
-        jj_consume_token(42);
+        jj_consume_token(41);
         n = Variable();
          b.addChild(n);
       }
@@ -184,7 +187,7 @@ public class Moaz implements MoazConstants {
     jj_consume_token(FOR);
     jj_consume_token(LP);
     c1 = assignstmt();
-    c2 = condition();
+    c2 = E();
     jj_consume_token(SEMI);
     c3 = E();
     jj_consume_token(RP);
@@ -225,7 +228,7 @@ public class Moaz implements MoazConstants {
   SyntaxTreeNode c = null;
     jj_consume_token(WHILE);
     jj_consume_token(LP);
-    c = condition();
+    c = E();
     jj_consume_token(RP);
       res.addChild(c);
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -262,7 +265,7 @@ public class Moaz implements MoazConstants {
   SyntaxTreeNode c = null;
     jj_consume_token(IF);
     jj_consume_token(LP);
-    c = condition();
+    c = E();
     jj_consume_token(RP);
       res.addChild(c);
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -331,13 +334,318 @@ public class Moaz implements MoazConstants {
 //  
 //  return n1;
 //}
+
+/*
+ExpressionNode E() :
+{
+	Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+}
+{
+  e=AssignmentExpression()
+  (
+  	t="," e2=AssignmentExpression()
+    														{
+                                	e = new ExpressionNode( t, e, e2);
+                                }
+  )*
+                                {
+                                  return e;
+                                }
+}
+
+
+JSExpression AssignmentExpression() :
+{
+	Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+}
+{
+  e=ConditionalExpression()
+  (
+  	( t="=" | t="&&=" | t="||=" | t="+=" | t="-=" | t="*=" | t="/=" | t="&=" | t="|=" | t="^=" | t="%=" | t="<<=" | t=">>=" | t=">>>=" )
+    e2=ConditionalExpression()
+    														{
+                                	e = new ExpressionNode( t, e, e2);
+                                }
+  )*
+                                {
+                                  return e;
+                                }
+}
+*/
   static final public ExpressionNode E() throws ParseException {
-  ExpressionNode n1, n2 = null;
-  Token t = null;
-    n1 = F();
+        Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+  ExpressionNode e3;
+    e = OrExpression();
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case PLUS:
-    case SUB:
+    case 42:
+      t = jj_consume_token(42);
+      e2 = E();
+      jj_consume_token(COLON);
+      e3 = E();
+                                        e = new ExpressionNode( t.image, e, e2, e3);
+      break;
+    default:
+      jj_la1[10] = jj_gen;
+      ;
+    }
+                                  {if (true) return e;}
+    throw new Error("Missing return statement in function");
+  }
+
+  static final public ExpressionNode OrExpression() throws ParseException {
+        Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+    e = AndExpression();
+    label_3:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case 43:
+        ;
+        break;
+      default:
+        jj_la1[11] = jj_gen;
+        break label_3;
+      }
+      t = jj_consume_token(43);
+      e2 = AndExpression();
+                                        e = new ExpressionNode( t.image, e, e2);
+    }
+                                  {if (true) return e;}
+    throw new Error("Missing return statement in function");
+  }
+
+  static final public ExpressionNode AndExpression() throws ParseException {
+        Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+    e = BitwiseOrExpression();
+    label_4:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case 44:
+        ;
+        break;
+      default:
+        jj_la1[12] = jj_gen;
+        break label_4;
+      }
+      t = jj_consume_token(44);
+      e2 = BitwiseOrExpression();
+                                        e = new ExpressionNode( t.image, e, e2);
+    }
+                                  {if (true) return e;}
+    throw new Error("Missing return statement in function");
+  }
+
+  static final public ExpressionNode BitwiseOrExpression() throws ParseException {
+        Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+    e = BitwiseXorExpression();
+    label_5:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case 45:
+        ;
+        break;
+      default:
+        jj_la1[13] = jj_gen;
+        break label_5;
+      }
+      t = jj_consume_token(45);
+      e2 = BitwiseXorExpression();
+                                        e = new ExpressionNode( t.image, e, e2);
+    }
+                                  {if (true) return e;}
+    throw new Error("Missing return statement in function");
+  }
+
+  static final public ExpressionNode BitwiseXorExpression() throws ParseException {
+        Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+    e = BitwiseAndExpression();
+    label_6:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case 46:
+        ;
+        break;
+      default:
+        jj_la1[14] = jj_gen;
+        break label_6;
+      }
+      t = jj_consume_token(46);
+      e2 = BitwiseAndExpression();
+                                        e = new ExpressionNode( t.image, e, e2);
+    }
+                                  {if (true) return e;}
+    throw new Error("Missing return statement in function");
+  }
+
+  static final public ExpressionNode BitwiseAndExpression() throws ParseException {
+        Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+    e = EqualityExpression();
+    label_7:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case 47:
+        ;
+        break;
+      default:
+        jj_la1[15] = jj_gen;
+        break label_7;
+      }
+      t = jj_consume_token(47);
+      e2 = EqualityExpression();
+                                        e = new ExpressionNode( t.image, e, e2);
+    }
+                                  {if (true) return e;}
+    throw new Error("Missing return statement in function");
+  }
+
+  static final public ExpressionNode EqualityExpression() throws ParseException {
+        Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+    e = RelationalExpression();
+    label_8:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case 48:
+      case 49:
+        ;
+        break;
+      default:
+        jj_la1[16] = jj_gen;
+        break label_8;
+      }
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case 48:
+        t = jj_consume_token(48);
+        break;
+      case 49:
+        t = jj_consume_token(49);
+        break;
+      default:
+        jj_la1[17] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+      e2 = RelationalExpression();
+                                        e = new ExpressionNode( t.image, e, e2);
+    }
+                                  {if (true) return e;}
+    throw new Error("Missing return statement in function");
+  }
+
+  static final public ExpressionNode RelationalExpression() throws ParseException {
+        Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+    e = ShiftExpression();
+    label_9:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case 50:
+      case 51:
+      case 52:
+      case 53:
+        ;
+        break;
+      default:
+        jj_la1[18] = jj_gen;
+        break label_9;
+      }
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case 50:
+        t = jj_consume_token(50);
+        break;
+      case 51:
+        t = jj_consume_token(51);
+        break;
+      case 52:
+        t = jj_consume_token(52);
+        break;
+      case 53:
+        t = jj_consume_token(53);
+        break;
+      default:
+        jj_la1[19] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+      e2 = ShiftExpression();
+                                        e = new ExpressionNode( t.image, e, e2);
+    }
+                                  {if (true) return e;}
+    throw new Error("Missing return statement in function");
+  }
+
+  static final public ExpressionNode ShiftExpression() throws ParseException {
+        Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+    e = AdditiveExpression();
+    label_10:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case READ:
+      case 54:
+      case 55:
+        ;
+        break;
+      default:
+        jj_la1[20] = jj_gen;
+        break label_10;
+      }
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case 54:
+        t = jj_consume_token(54);
+        break;
+      case READ:
+        t = jj_consume_token(READ);
+        break;
+      case 55:
+        t = jj_consume_token(55);
+        break;
+      default:
+        jj_la1[21] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
+      e2 = AdditiveExpression();
+                                        e = new ExpressionNode( t.image, e, e2);
+    }
+                                  {if (true) return e;}
+    throw new Error("Missing return statement in function");
+  }
+
+  static final public ExpressionNode AdditiveExpression() throws ParseException {
+        Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2;
+    e = MultiplicativeExpression();
+    label_11:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case PLUS:
+      case SUB:
+        ;
+        break;
+      default:
+        jj_la1[22] = jj_gen;
+        break label_11;
+      }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case PLUS:
         t = jj_consume_token(PLUS);
@@ -346,36 +654,34 @@ public class Moaz implements MoazConstants {
         t = jj_consume_token(SUB);
         break;
       default:
-        jj_la1[10] = jj_gen;
+        jj_la1[23] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
-      n2 = E();
-      break;
-    default:
-      jj_la1[11] = jj_gen;
-      ;
+      e2 = MultiplicativeExpression();
+                                        e = new ExpressionNode( t.image, e, e2);
     }
-    if (t == null)
-    {if (true) return n1;}
-    else
-    {
-      ExpressionNode res = new ExpressionNode();
-      res.setOperator(t.image);
-      res.addChild(n1);
-      res.addChild(n2);
-      {if (true) return res;}
-    }
+                                  {if (true) return e;}
     throw new Error("Missing return statement in function");
   }
 
-  static final public ExpressionNode F() throws ParseException {
-  ExpressionNode n1, n2 = null;
-  Token t = null;
-    n1 = N();
-    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case MULTIPLY:
-    case DIV:
+  static final public ExpressionNode MultiplicativeExpression() throws ParseException {
+        Token t;
+  ExpressionNode e = null;
+  ExpressionNode e2 = null;
+    e = N();
+    label_12:
+    while (true) {
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case MULTIPLY:
+      case DIV:
+      case 56:
+        ;
+        break;
+      default:
+        jj_la1[24] = jj_gen;
+        break label_12;
+      }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case MULTIPLY:
         t = jj_consume_token(MULTIPLY);
@@ -383,30 +689,80 @@ public class Moaz implements MoazConstants {
       case DIV:
         t = jj_consume_token(DIV);
         break;
+      case 56:
+        t = jj_consume_token(56);
+        break;
       default:
-        jj_la1[12] = jj_gen;
+        jj_la1[25] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
-      n2 = F();
-      break;
-    default:
-      jj_la1[13] = jj_gen;
-      ;
+      e2 = N();
+                                        e = new ExpressionNode( t.image, e, e2);
     }
-    if (t == null)
-    {if (true) return n1;}
+                                  {if (true) return e;}
+    throw new Error("Missing return statement in function");
+  }
+
+/*
+
+ExpressionNode last_E() :
+{
+  ExpressionNode n1, n2 = null;
+  Token t = null;
+}
+{
+  n1 = F()
+  (
+    (
+      t = < PLUS >
+    | t = < SUB >
+    )
+    n2 = E()
+  )?
+  {
+    if (t == null) 
+    return n1;
     else
     {
       ExpressionNode res = new ExpressionNode();
       res.setOperator(t.image);
       res.addChild(n1);
       res.addChild(n2);
-      {if (true) return res;}
+      return res;
     }
-    throw new Error("Missing return statement in function");
   }
+}
 
+ExpressionNode F() :
+{
+  ExpressionNode n1, n2 = null;
+  Token t = null;
+}
+{
+  n1 = N()
+  (
+    (
+      t = < MULTIPLY >
+    | t = < DIV >
+    )
+    n2 = F()
+  )?
+  {
+    if (t == null) 
+    return n1;
+    else
+    {
+      ExpressionNode res = new ExpressionNode();
+      res.setOperator(t.image);
+      res.addChild(n1);
+      res.addChild(n2);
+      return res;
+    }
+  }
+}
+
+*/
   static final public ExpressionNode N() throws ParseException {
   Token t;
   ExpressionNode e;
@@ -430,7 +786,7 @@ public class Moaz implements MoazConstants {
       {if (true) return v;}
       break;
     default:
-      jj_la1[14] = jj_gen;
+      jj_la1[26] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -447,7 +803,7 @@ public class Moaz implements MoazConstants {
   static public Token jj_nt;
   static private int jj_ntk;
   static private int jj_gen;
-  static final private int[] jj_la1 = new int[15];
+  static final private int[] jj_la1 = new int[27];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static {
@@ -455,10 +811,10 @@ public class Moaz implements MoazConstants {
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x1aa00000,0x1aa00000,0x0,0x10000000,0x40000,0x9aa00000,0x9aa00000,0x9aa00000,0x9aa00000,0x400000,0x60,0x60,0x180,0x180,0x20000000,};
+      jj_la1_0 = new int[] {0xd500000,0xd500000,0x0,0x8000000,0x20000,0x4d500000,0x4d500000,0x4d500000,0x4d500000,0x200000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x2000000,0x2000000,0x60,0x60,0x180,0x180,0x10000000,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x4,0x4,0x400,0x4,0x0,0x4,0x4,0x4,0x4,0x0,0x0,0x0,0x0,0x0,0x6,};
+      jj_la1_1 = new int[] {0x2,0x2,0x200,0x2,0x0,0x2,0x2,0x2,0x2,0x0,0x400,0x800,0x1000,0x2000,0x4000,0x8000,0x30000,0x30000,0x3c0000,0x3c0000,0xc00000,0xc00000,0x0,0x0,0x1000000,0x1000000,0x3,};
    }
 
   /** Constructor with InputStream. */
@@ -479,7 +835,7 @@ public class Moaz implements MoazConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 15; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -493,7 +849,7 @@ public class Moaz implements MoazConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 15; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -510,7 +866,7 @@ public class Moaz implements MoazConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 15; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -520,7 +876,7 @@ public class Moaz implements MoazConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 15; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -536,7 +892,7 @@ public class Moaz implements MoazConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 15; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -545,7 +901,7 @@ public class Moaz implements MoazConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 15; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
   }
 
   static private Token jj_consume_token(int kind) throws ParseException {
@@ -596,12 +952,12 @@ public class Moaz implements MoazConstants {
   /** Generate ParseException. */
   static public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[43];
+    boolean[] la1tokens = new boolean[57];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < 27; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -613,7 +969,7 @@ public class Moaz implements MoazConstants {
         }
       }
     }
-    for (int i = 0; i < 43; i++) {
+    for (int i = 0; i < 57; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

@@ -31,57 +31,55 @@ public interface MoazConstants {
   /** RegularExpression Id. */
   int Fact = 15;
   /** RegularExpression Id. */
-  int LOGICAL = 16;
+  int ALLASSIGN = 16;
   /** RegularExpression Id. */
-  int ALLASSIGN = 17;
+  int ASSIGN = 17;
   /** RegularExpression Id. */
-  int ASSIGN = 18;
+  int SEMI = 18;
   /** RegularExpression Id. */
-  int SEMI = 19;
+  int COLON = 19;
   /** RegularExpression Id. */
-  int COLON = 20;
+  int IF = 20;
   /** RegularExpression Id. */
-  int IF = 21;
+  int ELSE = 21;
   /** RegularExpression Id. */
-  int ELSE = 22;
+  int FOR = 22;
   /** RegularExpression Id. */
-  int FOR = 23;
+  int ARROW = 23;
   /** RegularExpression Id. */
-  int ARROW = 24;
+  int WHILE = 24;
   /** RegularExpression Id. */
-  int WHILE = 25;
+  int READ = 25;
   /** RegularExpression Id. */
-  int READ = 26;
+  int PRINT = 26;
   /** RegularExpression Id. */
-  int PRINT = 27;
+  int VAR_ = 27;
   /** RegularExpression Id. */
-  int VAR_ = 28;
+  int LP = 28;
   /** RegularExpression Id. */
-  int LP = 29;
+  int RP = 29;
   /** RegularExpression Id. */
-  int RP = 30;
+  int LB = 30;
   /** RegularExpression Id. */
-  int LB = 31;
+  int RB = 31;
   /** RegularExpression Id. */
-  int RB = 32;
+  int NUM = 32;
   /** RegularExpression Id. */
-  int NUM = 33;
+  int VAR = 33;
   /** RegularExpression Id. */
-  int VAR = 34;
+  int INCR = 34;
   /** RegularExpression Id. */
-  int INCR = 35;
+  int DECR = 35;
   /** RegularExpression Id. */
-  int DECR = 36;
+  int PLUSASSIGN = 36;
   /** RegularExpression Id. */
-  int PLUSASSIGN = 37;
+  int MINUSASSIGN = 37;
   /** RegularExpression Id. */
-  int MINUSASSIGN = 38;
+  int MULTASSIGN = 38;
   /** RegularExpression Id. */
-  int MULTASSIGN = 39;
+  int DIVASSIGN = 39;
   /** RegularExpression Id. */
-  int DIVASSIGN = 40;
-  /** RegularExpression Id. */
-  int REMASSIGN = 41;
+  int REMASSIGN = 40;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -104,7 +102,6 @@ public interface MoazConstants {
     "\"abs\"",
     "\"**\"",
     "\"!\"",
-    "<LOGICAL>",
     "<ALLASSIGN>",
     "\"=\"",
     "\";\"",
@@ -131,6 +128,21 @@ public interface MoazConstants {
     "\"/=\"",
     "\"%=\"",
     "\",\"",
+    "\"?\"",
+    "\"||\"",
+    "\"&&\"",
+    "\"|\"",
+    "\"^\"",
+    "\"&\"",
+    "\"==\"",
+    "\"!=\"",
+    "\"<\"",
+    "\">\"",
+    "\"<=\"",
+    "\">=\"",
+    "\"<<\"",
+    "\">>>\"",
+    "\"%\"",
   };
 
 }
