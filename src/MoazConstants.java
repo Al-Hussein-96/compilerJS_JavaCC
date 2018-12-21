@@ -53,17 +53,33 @@ public interface MoazConstants {
   /** RegularExpression Id. */
   int PRINT = 26;
   /** RegularExpression Id. */
-  int LP = 27;
+  int VAR_ = 27;
   /** RegularExpression Id. */
-  int RP = 28;
+  int LP = 28;
   /** RegularExpression Id. */
-  int LB = 29;
+  int RP = 29;
   /** RegularExpression Id. */
-  int RB = 30;
+  int LB = 30;
   /** RegularExpression Id. */
-  int NUM = 31;
+  int RB = 31;
   /** RegularExpression Id. */
-  int VAR = 32;
+  int NUM = 32;
+  /** RegularExpression Id. */
+  int VAR = 33;
+  /** RegularExpression Id. */
+  int INCR = 34;
+  /** RegularExpression Id. */
+  int DECR = 35;
+  /** RegularExpression Id. */
+  int PLUSASSIGN = 36;
+  /** RegularExpression Id. */
+  int MINUSASSIGN = 37;
+  /** RegularExpression Id. */
+  int MULTASSIGN = 38;
+  /** RegularExpression Id. */
+  int DIVASSIGN = 39;
+  /** RegularExpression Id. */
+  int REMASSIGN = 40;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -96,13 +112,21 @@ public interface MoazConstants {
     "\"->\"",
     "\"while\"",
     "\">>\"",
-    "\"console.log\"",
+    "<PRINT>",
+    "\"var\"",
     "\"(\"",
     "\")\"",
     "\"{\"",
     "\"}\"",
     "<NUM>",
     "<VAR>",
+    "\"++\"",
+    "\"--\"",
+    "\"+=\"",
+    "\"-=\"",
+    "\"*=\"",
+    "\"/=\"",
+    "\"%=\"",
   };
 
 }
