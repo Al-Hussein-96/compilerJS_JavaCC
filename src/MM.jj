@@ -154,10 +154,10 @@ SyntaxTreeNode SingleOP() :
 }
 {
   (
-    n = forstmt() 
-  |   n = whilestmt()
+    n = Declaration()
+  | n = forstmt() 
+  | n = whilestmt()
   | n = ifstmt()
-  | n = assignstmt()
   | n = printstmt()
   )
   {
@@ -192,6 +192,42 @@ ConditionNode condition() :
     res.addChild(n2);
     return res;
   }
+}
+BlockNode Declaration() :
+{
+	BlockNode b = new BlockNode();
+    SyntaxTreeNode n = null;
+}
+{
+    < VAR_ >
+    n=Variable()
+    {
+      b.addChild(n);
+    }
+    ("," n=Variable()
+  	 {
+         b.addChild(n);
+     }
+    )*
+    ";"
+    {
+     return b;
+    }
+}
+
+AssignNode Variable() :
+{
+    AssignNode res = new AssignNode();
+	Token t;
+	SyntaxTreeNode n = null;
+}
+{
+	t=< VAR > ( < ASSIGN > n=E() )?
+    {
+	    res.setVariable(t.image);
+	    res.addChild(n);
+	    return res;
+    }
 }
 
 AssignNode assignstmt() :
