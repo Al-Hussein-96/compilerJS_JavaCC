@@ -63,23 +63,37 @@ public interface MoazConstants {
   /** RegularExpression Id. */
   int RB = 31;
   /** RegularExpression Id. */
-  int NUM = 32;
+  int VAR = 32;
   /** RegularExpression Id. */
-  int VAR = 33;
+  int INCR = 33;
   /** RegularExpression Id. */
-  int INCR = 34;
+  int DECR = 34;
   /** RegularExpression Id. */
-  int DECR = 35;
+  int PLUSASSIGN = 35;
   /** RegularExpression Id. */
-  int PLUSASSIGN = 36;
+  int MINUSASSIGN = 36;
   /** RegularExpression Id. */
-  int MINUSASSIGN = 37;
+  int MULTASSIGN = 37;
   /** RegularExpression Id. */
-  int MULTASSIGN = 38;
+  int DIVASSIGN = 38;
   /** RegularExpression Id. */
-  int DIVASSIGN = 39;
+  int REMASSIGN = 39;
   /** RegularExpression Id. */
-  int REMASSIGN = 40;
+  int INTEGER_LITERAL = 40;
+  /** RegularExpression Id. */
+  int DECIMAL_LITERAL = 41;
+  /** RegularExpression Id. */
+  int FLOATING_POINT_LITERAL = 42;
+  /** RegularExpression Id. */
+  int EXPONENT = 43;
+  /** RegularExpression Id. */
+  int STRING_LITERAL = 44;
+  /** RegularExpression Id. */
+  int ESCAPE_SEQUENCE = 45;
+  /** RegularExpression Id. */
+  int BOOLEAN_LITERAL = 46;
+  /** RegularExpression Id. */
+  int NULL_LITERAL = 47;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -118,7 +132,6 @@ public interface MoazConstants {
     "\")\"",
     "\"{\"",
     "\"}\"",
-    "<NUM>",
     "<VAR>",
     "\"++\"",
     "\"--\"",
@@ -127,6 +140,14 @@ public interface MoazConstants {
     "\"*=\"",
     "\"/=\"",
     "\"%=\"",
+    "<INTEGER_LITERAL>",
+    "<DECIMAL_LITERAL>",
+    "<FLOATING_POINT_LITERAL>",
+    "<EXPONENT>",
+    "<STRING_LITERAL>",
+    "<ESCAPE_SEQUENCE>",
+    "<BOOLEAN_LITERAL>",
+    "\"null\"",
     "\",\"",
     "\"?\"",
     "\"||\"",

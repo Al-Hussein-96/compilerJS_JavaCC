@@ -12,6 +12,7 @@ public abstract class SyntaxTreeNode {
 	
 	public abstract Object execute(Context context);
 	
+	
 	protected abstract String getName();
 	
 	public void print(String prefix) {

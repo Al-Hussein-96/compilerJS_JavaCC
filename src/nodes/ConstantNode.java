@@ -2,32 +2,40 @@ package nodes;
 
 public class ConstantNode extends ExpressionNode {
 
-	public ConstantNode() {
+	public ConstantNode(Object value, int type) {
 		// TODO Auto-generated constructor stub
-	}
-	public ConstantNode(String operator, SyntaxTreeNode child1, SyntaxTreeNode child2) {
-		super(operator, child1, child2);
-		// TODO Auto-generated constructor stub
+
+		if (type == 2) { /// for remove " "
+			String temp = (String) value;
+			value = temp.substring(1, temp.length() - 1);
+		}
+		this.value = value;
+		this.type = type;
 	}
 
-	double value;
+	Object value;
+	int type;
 
-	public double getValue() {
+	public Object getValue() {
 		return value;
 	}
 
-	public void setValue(double value) {
+	public void setValue(Object value) {
 		this.value = value;
 	}
-	
+
 	@Override
 	protected String getName() {
 		// TODO Auto-generated method stub
 		return value + "";
 	}
-	
+
 	public Object execute(Context context) {
 		return value;
 	}
-	
+
+	public int getType() {
+		return type;
+	}
+
 }

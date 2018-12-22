@@ -116,14 +116,14 @@ ConditionNode condition() :
       label_2:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case 41:
+        case 48:
           ;
           break;
         default:
           jj_la1[2] = jj_gen;
           break label_2;
         }
-        jj_consume_token(41);
+        jj_consume_token(48);
         n = Variable();
          b.addChild(n);
       }
@@ -173,10 +173,7 @@ ConditionNode condition() :
     throw new Error("Missing return statement in function");
   }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////// For statment ////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
   static final public ForNode forstmt() throws ParseException {
   ForNode res = new ForNode();
@@ -218,11 +215,8 @@ ConditionNode condition() :
     throw new Error("Missing return statement in function");
   }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////// while statment ////////////////////////////////////////
 //////////////////////  with one statment after it or multi statment //////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
   static final public WhileNode whilestmt() throws ParseException {
   WhileNode res = new WhileNode();
   SyntaxTreeNode c = null;
@@ -255,11 +249,8 @@ ConditionNode condition() :
     throw new Error("Missing return statement in function");
   }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////// if else statment ////////////////////////////////////////
 //////////////////////with one statment after it or multi statment //////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
   static final public IfNode ifstmt() throws ParseException {
   IfNode res = new IfNode();
   SyntaxTreeNode c = null;
@@ -320,8 +311,6 @@ ConditionNode condition() :
     throw new Error("Missing return statement in function");
   }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////// Begin mathematical ////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -377,152 +366,152 @@ JSExpression AssignmentExpression() :
 }
 */
   static final public ExpressionNode E() throws ParseException {
-        Token t;
+  Token t;
   ExpressionNode e = null;
   ExpressionNode e2;
   ExpressionNode e3;
     e = OrExpression();
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case 42:
-      t = jj_consume_token(42);
+    case 49:
+      t = jj_consume_token(49);
       e2 = E();
       jj_consume_token(COLON);
       e3 = E();
-                                        e = new ExpressionNode( t.image, e, e2, e3);
+      e = new ExpressionNode(t.image, e, e2, e3);
       break;
     default:
       jj_la1[10] = jj_gen;
       ;
     }
-                                  {if (true) return e;}
+    {if (true) return e;}
     throw new Error("Missing return statement in function");
   }
 
   static final public ExpressionNode OrExpression() throws ParseException {
-        Token t;
+  Token t;
   ExpressionNode e = null;
   ExpressionNode e2;
     e = AndExpression();
     label_3:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case 43:
+      case 50:
         ;
         break;
       default:
         jj_la1[11] = jj_gen;
         break label_3;
       }
-      t = jj_consume_token(43);
+      t = jj_consume_token(50);
       e2 = AndExpression();
-                                        e = new ExpressionNode( t.image, e, e2);
+      e = new ExpressionNode(t.image, e, e2);
     }
-                                  {if (true) return e;}
+    {if (true) return e;}
     throw new Error("Missing return statement in function");
   }
 
   static final public ExpressionNode AndExpression() throws ParseException {
-        Token t;
+  Token t;
   ExpressionNode e = null;
   ExpressionNode e2;
     e = BitwiseOrExpression();
     label_4:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case 44:
+      case 51:
         ;
         break;
       default:
         jj_la1[12] = jj_gen;
         break label_4;
       }
-      t = jj_consume_token(44);
+      t = jj_consume_token(51);
       e2 = BitwiseOrExpression();
-                                        e = new ExpressionNode( t.image, e, e2);
+      e = new ExpressionNode(t.image, e, e2);
     }
-                                  {if (true) return e;}
+    {if (true) return e;}
     throw new Error("Missing return statement in function");
   }
 
   static final public ExpressionNode BitwiseOrExpression() throws ParseException {
-        Token t;
+  Token t;
   ExpressionNode e = null;
   ExpressionNode e2;
     e = BitwiseXorExpression();
     label_5:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case 45:
+      case 52:
         ;
         break;
       default:
         jj_la1[13] = jj_gen;
         break label_5;
       }
-      t = jj_consume_token(45);
+      t = jj_consume_token(52);
       e2 = BitwiseXorExpression();
-                                        e = new ExpressionNode( t.image, e, e2);
+      e = new ExpressionNode(t.image, e, e2);
     }
-                                  {if (true) return e;}
+    {if (true) return e;}
     throw new Error("Missing return statement in function");
   }
 
   static final public ExpressionNode BitwiseXorExpression() throws ParseException {
-        Token t;
+  Token t;
   ExpressionNode e = null;
   ExpressionNode e2;
     e = BitwiseAndExpression();
     label_6:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case 46:
+      case 53:
         ;
         break;
       default:
         jj_la1[14] = jj_gen;
         break label_6;
       }
-      t = jj_consume_token(46);
+      t = jj_consume_token(53);
       e2 = BitwiseAndExpression();
-                                        e = new ExpressionNode( t.image, e, e2);
+      e = new ExpressionNode(t.image, e, e2);
     }
-                                  {if (true) return e;}
+    {if (true) return e;}
     throw new Error("Missing return statement in function");
   }
 
   static final public ExpressionNode BitwiseAndExpression() throws ParseException {
-        Token t;
+  Token t;
   ExpressionNode e = null;
   ExpressionNode e2;
     e = EqualityExpression();
     label_7:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case 47:
+      case 54:
         ;
         break;
       default:
         jj_la1[15] = jj_gen;
         break label_7;
       }
-      t = jj_consume_token(47);
+      t = jj_consume_token(54);
       e2 = EqualityExpression();
-                                        e = new ExpressionNode( t.image, e, e2);
+      e = new ExpressionNode(t.image, e, e2);
     }
-                                  {if (true) return e;}
+    {if (true) return e;}
     throw new Error("Missing return statement in function");
   }
 
   static final public ExpressionNode EqualityExpression() throws ParseException {
-        Token t;
+  Token t;
   ExpressionNode e = null;
   ExpressionNode e2;
     e = RelationalExpression();
     label_8:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case 48:
-      case 49:
+      case 55:
+      case 56:
         ;
         break;
       default:
@@ -530,11 +519,11 @@ JSExpression AssignmentExpression() :
         break label_8;
       }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case 48:
-        t = jj_consume_token(48);
+      case 55:
+        t = jj_consume_token(55);
         break;
-      case 49:
-        t = jj_consume_token(49);
+      case 56:
+        t = jj_consume_token(56);
         break;
       default:
         jj_la1[17] = jj_gen;
@@ -542,24 +531,24 @@ JSExpression AssignmentExpression() :
         throw new ParseException();
       }
       e2 = RelationalExpression();
-                                        e = new ExpressionNode( t.image, e, e2);
+      e = new ExpressionNode(t.image, e, e2);
     }
-                                  {if (true) return e;}
+    {if (true) return e;}
     throw new Error("Missing return statement in function");
   }
 
   static final public ExpressionNode RelationalExpression() throws ParseException {
-        Token t;
+  Token t;
   ExpressionNode e = null;
   ExpressionNode e2;
     e = ShiftExpression();
     label_9:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case 50:
-      case 51:
-      case 52:
-      case 53:
+      case 57:
+      case 58:
+      case 59:
+      case 60:
         ;
         break;
       default:
@@ -567,17 +556,17 @@ JSExpression AssignmentExpression() :
         break label_9;
       }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case 50:
-        t = jj_consume_token(50);
+      case 57:
+        t = jj_consume_token(57);
         break;
-      case 51:
-        t = jj_consume_token(51);
+      case 58:
+        t = jj_consume_token(58);
         break;
-      case 52:
-        t = jj_consume_token(52);
+      case 59:
+        t = jj_consume_token(59);
         break;
-      case 53:
-        t = jj_consume_token(53);
+      case 60:
+        t = jj_consume_token(60);
         break;
       default:
         jj_la1[19] = jj_gen;
@@ -585,14 +574,14 @@ JSExpression AssignmentExpression() :
         throw new ParseException();
       }
       e2 = ShiftExpression();
-                                        e = new ExpressionNode( t.image, e, e2);
+      e = new ExpressionNode(t.image, e, e2);
     }
-                                  {if (true) return e;}
+    {if (true) return e;}
     throw new Error("Missing return statement in function");
   }
 
   static final public ExpressionNode ShiftExpression() throws ParseException {
-        Token t;
+  Token t;
   ExpressionNode e = null;
   ExpressionNode e2;
     e = AdditiveExpression();
@@ -600,8 +589,8 @@ JSExpression AssignmentExpression() :
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case READ:
-      case 54:
-      case 55:
+      case 61:
+      case 62:
         ;
         break;
       default:
@@ -609,14 +598,14 @@ JSExpression AssignmentExpression() :
         break label_10;
       }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case 54:
-        t = jj_consume_token(54);
+      case 61:
+        t = jj_consume_token(61);
         break;
       case READ:
         t = jj_consume_token(READ);
         break;
-      case 55:
-        t = jj_consume_token(55);
+      case 62:
+        t = jj_consume_token(62);
         break;
       default:
         jj_la1[21] = jj_gen;
@@ -624,14 +613,14 @@ JSExpression AssignmentExpression() :
         throw new ParseException();
       }
       e2 = AdditiveExpression();
-                                        e = new ExpressionNode( t.image, e, e2);
+      e = new ExpressionNode(t.image, e, e2);
     }
-                                  {if (true) return e;}
+    {if (true) return e;}
     throw new Error("Missing return statement in function");
   }
 
   static final public ExpressionNode AdditiveExpression() throws ParseException {
-        Token t;
+  Token t;
   ExpressionNode e = null;
   ExpressionNode e2;
     e = MultiplicativeExpression();
@@ -659,14 +648,14 @@ JSExpression AssignmentExpression() :
         throw new ParseException();
       }
       e2 = MultiplicativeExpression();
-                                        e = new ExpressionNode( t.image, e, e2);
+      e = new ExpressionNode(t.image, e, e2);
     }
-                                  {if (true) return e;}
+    {if (true) return e;}
     throw new Error("Missing return statement in function");
   }
 
   static final public ExpressionNode MultiplicativeExpression() throws ParseException {
-        Token t;
+  Token t;
   ExpressionNode e = null;
   ExpressionNode e2 = null;
     e = N();
@@ -675,7 +664,7 @@ JSExpression AssignmentExpression() :
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case MULTIPLY:
       case DIV:
-      case 56:
+      case 63:
         ;
         break;
       default:
@@ -689,8 +678,8 @@ JSExpression AssignmentExpression() :
       case DIV:
         t = jj_consume_token(DIV);
         break;
-      case 56:
-        t = jj_consume_token(56);
+      case 63:
+        t = jj_consume_token(63);
         break;
       default:
         jj_la1[25] = jj_gen;
@@ -698,80 +687,22 @@ JSExpression AssignmentExpression() :
         throw new ParseException();
       }
       e2 = N();
-                                        e = new ExpressionNode( t.image, e, e2);
+      e = new ExpressionNode(t.image, e, e2);
     }
-                                  {if (true) return e;}
+    {if (true) return e;}
     throw new Error("Missing return statement in function");
   }
 
-/*
-
-ExpressionNode last_E() :
-{
-  ExpressionNode n1, n2 = null;
-  Token t = null;
-}
-{
-  n1 = F()
-  (
-    (
-      t = < PLUS >
-    | t = < SUB >
-    )
-    n2 = E()
-  )?
-  {
-    if (t == null) 
-    return n1;
-    else
-    {
-      ExpressionNode res = new ExpressionNode();
-      res.setOperator(t.image);
-      res.addChild(n1);
-      res.addChild(n2);
-      return res;
-    }
-  }
-}
-
-ExpressionNode F() :
-{
-  ExpressionNode n1, n2 = null;
-  Token t = null;
-}
-{
-  n1 = N()
-  (
-    (
-      t = < MULTIPLY >
-    | t = < DIV >
-    )
-    n2 = F()
-  )?
-  {
-    if (t == null) 
-    return n1;
-    else
-    {
-      ExpressionNode res = new ExpressionNode();
-      res.setOperator(t.image);
-      res.addChild(n1);
-      res.addChild(n2);
-      return res;
-    }
-  }
-}
-
-*/
   static final public ExpressionNode N() throws ParseException {
   Token t;
   ExpressionNode e;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case NUM:
-      t = jj_consume_token(NUM);
-      ConstantNode n = new ConstantNode();
-      n.setValue(Double.parseDouble(t.image));
-      {if (true) return n;}
+    case INTEGER_LITERAL:
+    case FLOATING_POINT_LITERAL:
+    case STRING_LITERAL:
+    case BOOLEAN_LITERAL:
+      e = LiteralExpression();
+      {if (true) return e;}
       break;
     case LP:
       jj_consume_token(LP);
@@ -793,6 +724,35 @@ ExpressionNode F() :
     throw new Error("Missing return statement in function");
   }
 
+  static final public ExpressionNode LiteralExpression() throws ParseException {
+  ConstantNode e = null;
+  Token t = null;
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case INTEGER_LITERAL:
+      t = jj_consume_token(INTEGER_LITERAL);
+      e = new ConstantNode(t.image, 0);
+      break;
+    case FLOATING_POINT_LITERAL:
+      t = jj_consume_token(FLOATING_POINT_LITERAL);
+      e = new ConstantNode(t.image, 1);
+      break;
+    case STRING_LITERAL:
+      t = jj_consume_token(STRING_LITERAL);
+      e = new ConstantNode(t.image, 2);
+      break;
+    case BOOLEAN_LITERAL:
+      t = jj_consume_token(BOOLEAN_LITERAL);
+      e = new ConstantNode(t.image, 3);
+      break;
+    default:
+      jj_la1[27] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+    {if (true) return e;}
+    throw new Error("Missing return statement in function");
+  }
+
   static private boolean jj_initialized_once = false;
   /** Generated Token Manager. */
   static public MoazTokenManager token_source;
@@ -803,7 +763,7 @@ ExpressionNode F() :
   static public Token jj_nt;
   static private int jj_ntk;
   static private int jj_gen;
-  static final private int[] jj_la1 = new int[27];
+  static final private int[] jj_la1 = new int[28];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
   static {
@@ -811,10 +771,10 @@ ExpressionNode F() :
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0xd500000,0xd500000,0x0,0x8000000,0x20000,0x4d500000,0x4d500000,0x4d500000,0x4d500000,0x200000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x2000000,0x2000000,0x60,0x60,0x180,0x180,0x10000000,};
+      jj_la1_0 = new int[] {0xd500000,0xd500000,0x0,0x8000000,0x20000,0x4d500000,0x4d500000,0x4d500000,0x4d500000,0x200000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x2000000,0x2000000,0x60,0x60,0x180,0x180,0x10000000,0x0,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x2,0x2,0x200,0x2,0x0,0x2,0x2,0x2,0x2,0x0,0x400,0x800,0x1000,0x2000,0x4000,0x8000,0x30000,0x30000,0x3c0000,0x3c0000,0xc00000,0xc00000,0x0,0x0,0x1000000,0x1000000,0x3,};
+      jj_la1_1 = new int[] {0x1,0x1,0x10000,0x1,0x0,0x1,0x1,0x1,0x1,0x0,0x20000,0x40000,0x80000,0x100000,0x200000,0x400000,0x1800000,0x1800000,0x1e000000,0x1e000000,0x60000000,0x60000000,0x0,0x0,0x80000000,0x80000000,0x5501,0x5500,};
    }
 
   /** Constructor with InputStream. */
@@ -835,7 +795,7 @@ ExpressionNode F() :
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -849,7 +809,7 @@ ExpressionNode F() :
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -866,7 +826,7 @@ ExpressionNode F() :
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -876,7 +836,7 @@ ExpressionNode F() :
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -892,7 +852,7 @@ ExpressionNode F() :
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -901,7 +861,7 @@ ExpressionNode F() :
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 27; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
   }
 
   static private Token jj_consume_token(int kind) throws ParseException {
@@ -952,12 +912,12 @@ ExpressionNode F() :
   /** Generate ParseException. */
   static public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[57];
+    boolean[] la1tokens = new boolean[64];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 27; i++) {
+    for (int i = 0; i < 28; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -969,7 +929,7 @@ ExpressionNode F() :
         }
       }
     }
-    for (int i = 0; i < 57; i++) {
+    for (int i = 0; i < 64; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;

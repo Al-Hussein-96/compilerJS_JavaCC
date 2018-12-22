@@ -45,7 +45,7 @@ TOKEN :
 | < POWER : "**" >
 | < Fact : "!" >
 //| < LOGICAL : "<" | ">"| "<="| ">="| "=="| "!=" >
-| < ALLASSIGN :"+="| "-="| "*="| "/=" >   
+| < ALLASSIGN :"+="| "-="| "*="| "/=">   
 | < ASSIGN : "=" >
 | < SEMI : ";" >
 | < COLON : ":" >
@@ -64,8 +64,7 @@ TOKEN :
   < LP : "(" >
 | < RP : ")" >
 | < LB : "{" >
-| < RB : "}" >
-| < NUM: (["0"-"9"])+("."(["0"-"9"])+)?(("e"|"E")("+"|"-")?(["0"-"9"])+)? >                                                                                                                                                                                                                                                                                                                                                                                                     
+| < RB : "}" >                                                                                                                                                                                                                                                                                                                                                                                                     
 | < VAR :( [ "a"-"z" ] | [ "A"-"Z" ]| [ "$" ]| [ "_" ] )([ "a"-"z" ]| [ "A"-"Z" ] | [ "0"-"9" ]| [ "$" ]| [ "_" ])* >
 }
 
@@ -80,6 +79,32 @@ TOKEN :
  |  <REMASSIGN:	"%=">
 
 }
+
+TOKEN : /* LITERALS */
+{
+  < INTEGER_LITERAL: <DECIMAL_LITERAL> >
+| < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
+| < FLOATING_POINT_LITERAL: (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? | "." (["0"-"9"])+ (<EXPONENT>)? | (["0"-"9"])+ (<EXPONENT>)? >
+| < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
+| < STRING_LITERAL:
+	"\"" ( (~["\"","\\","\n","\r"])
+	| <ESCAPE_SEQUENCE> )* "\""
+	| "'" (   (~["'","\\","\n","\r"])
+	| <ESCAPE_SEQUENCE> )* "'" >
+| < #ESCAPE_SEQUENCE:
+      "\\"
+        ( ["n","t","b","r","f","\\","'","\""] | ["0"-"7"] ( ["0"-"7"] )?
+        | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+        | ["x", "X"] ["0"-"9","a"-"f","A"-"F"] ["0"-"9","a"-"f","A"-"F"]
+        )
+  >
+|
+  < BOOLEAN_LITERAL:"true"|"false">
+|
+  < NULL_LITERAL: "null" >
+}
+
+
 
 BlockNode start() :
 {
@@ -221,11 +246,10 @@ AssignNode assignstmt() :
   }
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
+
 /////////////////////////////////////// For statment ////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
+
 ForNode forstmt() :
 {
   ForNode res = new ForNode();
@@ -255,11 +279,9 @@ ForNode forstmt() :
     return res;
   }
 }
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
+
 /////////////////////////////////////// while statment ////////////////////////////////////////
 //////////////////////  with one statment after it or multi statment //////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
 WhileNode whilestmt() :
 {
   WhileNode res = new WhileNode();
@@ -285,11 +307,9 @@ WhileNode whilestmt() :
   }
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
+
 /////////////////////////////////////// if else statment ////////////////////////////////////////
 //////////////////////with one statment after it or multi statment //////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
 IfNode ifstmt() :
 {
   IfNode res = new IfNode();
@@ -326,8 +346,7 @@ IfNode ifstmt() :
   }
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
+
 /////////////////////////////////////// Begin mathematical ////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -384,274 +403,237 @@ JSExpression AssignmentExpression() :
 */
 ExpressionNode E() :
 {
-	Token t;
+  Token t;
   ExpressionNode e = null;
   ExpressionNode e2;
   ExpressionNode e3;
 }
 {
-  e=OrExpression()
+  e = OrExpression()
   (
-  	t="?" e2=E() ":" e3=E()
-    														{
-                                	e = new ExpressionNode( t.image, e, e2, e3);
-                                }
+    t = "?" e2 = E() ":" e3 = E()
+    {
+      e = new ExpressionNode(t.image, e, e2, e3);
+    }
   )?
-                                {
-                                  return e;
-                                }
+  {
+    return e;
+  }
 }
 
 ExpressionNode OrExpression() :
 {
-	Token t;
+  Token t;
   ExpressionNode e = null;
   ExpressionNode e2;
 }
 {
-  e=AndExpression()
+  e = AndExpression()
   (
-  	t="||" e2=AndExpression()
-    														{
-                                	e = new ExpressionNode( t.image, e, e2);
-                                }
+    t = "||" e2 = AndExpression()
+    {
+      e = new ExpressionNode(t.image, e, e2);
+    }
   )*
-                                {
-                                  return e;
-                                }
+  {
+    return e;
+  }
 }
 
 ExpressionNode AndExpression() :
 {
-	Token t;
+  Token t;
   ExpressionNode e = null;
   ExpressionNode e2;
 }
 {
-  e=BitwiseOrExpression()
+  e = BitwiseOrExpression()
   (
-  	t="&&" e2=BitwiseOrExpression()
-    														{
-                                	e = new ExpressionNode( t.image, e, e2);
-                                }
+    t = "&&" e2 = BitwiseOrExpression()
+    {
+      e = new ExpressionNode(t.image, e, e2);
+    }
   )*
-                                {
-                                  return e;
-                                }
+  {
+    return e;
+  }
 }
 
 ExpressionNode BitwiseOrExpression() :
 {
-	Token t;
+  Token t;
   ExpressionNode e = null;
   ExpressionNode e2;
 }
 {
-  e=BitwiseXorExpression()
+  e = BitwiseXorExpression()
   (
-  	t="|" e2=BitwiseXorExpression()
-    														{
-                                	e = new ExpressionNode( t.image, e, e2);
-                                }
+    t = "|" e2 = BitwiseXorExpression()
+    {
+      e = new ExpressionNode(t.image, e, e2);
+    }
   )*
-                                {
-                                  return e;
-                                }
+  {
+    return e;
+  }
 }
 
 ExpressionNode BitwiseXorExpression() :
 {
-	Token t;
+  Token t;
   ExpressionNode e = null;
   ExpressionNode e2;
 }
 {
-  e=BitwiseAndExpression()
+  e = BitwiseAndExpression()
   (
-  	t="^" e2=BitwiseAndExpression()
-    														{
-                                	e = new ExpressionNode( t.image, e, e2);
-                                }
+    t = "^" e2 = BitwiseAndExpression()
+    {
+      e = new ExpressionNode(t.image, e, e2);
+    }
   )*
-                                {
-                                  return e;
-                                }
+  {
+    return e;
+  }
 }
 
 ExpressionNode BitwiseAndExpression() :
 {
-	Token t;
+  Token t;
   ExpressionNode e = null;
   ExpressionNode e2;
 }
 {
-  e=EqualityExpression()
+  e = EqualityExpression()
   (
-  	t="&" e2=EqualityExpression()
-    														{
-                                	e = new ExpressionNode( t.image, e, e2);
-                                }
+    t = "&" e2 = EqualityExpression()
+    {
+      e = new ExpressionNode(t.image, e, e2);
+    }
   )*
-                                {
-                                  return e;
-                                }
+  {
+    return e;
+  }
 }
 
 ExpressionNode EqualityExpression() :
 {
-	Token t;
+  Token t;
   ExpressionNode e = null;
   ExpressionNode e2;
 }
 {
-  e=RelationalExpression()
+  e = RelationalExpression()
   (
-  	( t="==" | t="!=" ) e2=RelationalExpression()
-    														{
-                                	e = new ExpressionNode( t.image, e, e2);
-                                }
+    (
+      t = "=="
+    | t = "!="
+    )
+    e2 = RelationalExpression()
+    {
+      e = new ExpressionNode(t.image, e, e2);
+    }
   )*
-                                {
-                                  return e;
-                                }
+  {
+    return e;
+  }
 }
 
 ExpressionNode RelationalExpression() :
 {
-	Token t;
+  Token t;
   ExpressionNode e = null;
   ExpressionNode e2;
 }
 {
-  e=ShiftExpression()
+  e = ShiftExpression()
   (
-  	( t="<" | t=">" | t="<=" | t=">=" ) e2=ShiftExpression()
-    														{
-                                	e = new ExpressionNode( t.image, e, e2);
-                                }
+    (
+      t = "<"
+    | t = ">"
+    | t = "<="
+    | t = ">="
+    )
+    e2 = ShiftExpression()
+    {
+      e = new ExpressionNode(t.image, e, e2);
+    }
   )*
-                                {
-                                  return e;
-                                }
+  {
+    return e;
+  }
 }
 
 ExpressionNode ShiftExpression() :
 {
-	Token t;
+  Token t;
   ExpressionNode e = null;
   ExpressionNode e2;
 }
 {
-  e=AdditiveExpression()
+  e = AdditiveExpression()
   (
-  	( t="<<" | t=">>" | t=">>>" ) e2=AdditiveExpression()
-    														{
-                                	e = new ExpressionNode( t.image, e, e2);
-                                }
+    (
+      t = "<<"
+    | t = ">>"
+    | t = ">>>"
+    )
+    e2 = AdditiveExpression()
+    {
+      e = new ExpressionNode(t.image, e, e2);
+    }
   )*
-                                {
-                                  return e;
-                                }
+  {
+    return e;
+  }
 }
 
 ExpressionNode AdditiveExpression() :
 {
-	Token t;
+  Token t;
   ExpressionNode e = null;
   ExpressionNode e2;
 }
 {
-  e=MultiplicativeExpression()
+  e = MultiplicativeExpression()
   (
-  	( t="+" | t="-" ) e2=MultiplicativeExpression()
-    														{
-                                	e = new ExpressionNode( t.image, e, e2);
-                                }
+    (
+      t = "+"
+    | t = "-"
+    )
+    e2 = MultiplicativeExpression()
+    {
+      e = new ExpressionNode(t.image, e, e2);
+    }
   )*
-                                {
-                                  return e;
-                                }
+  {
+    return e;
+  }
 }
 
 ExpressionNode MultiplicativeExpression() :
 {
-	Token t;
+  Token t;
   ExpressionNode e = null;
   ExpressionNode e2 = null;
 }
 {
-  e=N()
+  e = N()
   (
-  	( t="*" | t="/" | t="%" ) e2=N()
-    														{
-                                	e = new ExpressionNode( t.image, e, e2);
-                                }
+    (
+      t = "*"
+    | t = "/"
+    | t = "%"
+    )
+    e2 = N()
+    {
+      e = new ExpressionNode(t.image, e, e2);
+    }
   )*
-                                {
-                                  
-                                  return e;
-                                }
-}
-
-/*
-
-ExpressionNode last_E() :
-{
-  ExpressionNode n1, n2 = null;
-  Token t = null;
-}
-{
-  n1 = F()
-  (
-    (
-      t = < PLUS >
-    | t = < SUB >
-    )
-    n2 = E()
-  )?
   {
-    if (t == null) 
-    return n1;
-    else
-    {
-      ExpressionNode res = new ExpressionNode();
-      res.setOperator(t.image);
-      res.addChild(n1);
-      res.addChild(n2);
-      return res;
-    }
+    return e;
   }
 }
-
-ExpressionNode F() :
-{
-  ExpressionNode n1, n2 = null;
-  Token t = null;
-}
-{
-  n1 = N()
-  (
-    (
-      t = < MULTIPLY >
-    | t = < DIV >
-    )
-    n2 = F()
-  )?
-  {
-    if (t == null) 
-    return n1;
-    else
-    {
-      ExpressionNode res = new ExpressionNode();
-      res.setOperator(t.image);
-      res.addChild(n1);
-      res.addChild(n2);
-      return res;
-    }
-  }
-}
-
-*/
 
 ExpressionNode N() :
 {
@@ -660,11 +642,9 @@ ExpressionNode N() :
 }
 {
   (
-    t = < NUM >
+    e = LiteralExpression()
     {
-      ConstantNode n = new ConstantNode();
-      n.setValue(Double.parseDouble(t.image));
-      return n;
+      return e;
     }
   )
 |
@@ -683,9 +663,36 @@ ExpressionNode N() :
       return v;
     }
   )
-  //  | x = LOG()
-  //  | x = SIN()
-  //  | x = COS() 
-  //  | x = TAN()
-  //  | x = ABS()
+}
+
+ExpressionNode LiteralExpression() :
+{
+  ConstantNode e = null;
+  Token t = null;
+}
+{
+  (
+    t = < INTEGER_LITERAL >
+    {
+      e = new ConstantNode(t.image, 0);
+    }
+  | 
+    t = < FLOATING_POINT_LITERAL >
+    {
+      e = new ConstantNode(t.image, 1);
+    }
+  | 
+    t = < STRING_LITERAL >
+    {
+      e = new ConstantNode(t.image, 2);
+    }
+  | 
+    t = < BOOLEAN_LITERAL >
+    {
+      e = new ConstantNode(t.image, 3);
+    }
+  )
+  {
+    return e;
+  }
 }

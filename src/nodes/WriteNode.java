@@ -15,4 +15,6 @@ public class WriteNode extends SyntaxTreeNode {
 		return "Print";
 	}
 
+	
+
 }
