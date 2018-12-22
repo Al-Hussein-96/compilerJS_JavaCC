@@ -21,4 +21,13 @@ public abstract class SyntaxTreeNode {
 			child.print(prefix + "---");
 		}
 	}
+
+	public int getType(Object ob){
+		
+		if(ob instanceof Integer)return 0;
+		if(ob instanceof Double)return 1;
+		if(ob instanceof String)return 2;
+		if(ob instanceof Boolean)return 3;
+		return -1;
+	}
 }

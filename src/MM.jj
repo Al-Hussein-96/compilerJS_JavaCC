@@ -293,11 +293,7 @@ WhileNode whilestmt() :
     {
       res.addChild(c);
     }
-    (
-      < LB > c = block() < RB >
-    | 
-      c = SingleOP()
-    )
+    ( < LB > c = block() < RB > |  c = SingleOP())
     {
       res.addChild(c);
     }
@@ -674,22 +670,22 @@ ExpressionNode LiteralExpression() :
   (
     t = < INTEGER_LITERAL >
     {
-      e = new ConstantNode(t.image, 0);
+      e = new ConstantNode(Integer.valueOf(t.image));
     }
   | 
     t = < FLOATING_POINT_LITERAL >
     {
-      e = new ConstantNode(t.image, 1);
+      e = new ConstantNode(Double.valueOf(t.image));
     }
   | 
     t = < STRING_LITERAL >
     {
-      e = new ConstantNode(t.image, 2);
+      e = new ConstantNode(t.image);
     }
   | 
     t = < BOOLEAN_LITERAL >
     {
-      e = new ConstantNode(t.image, 3);
+      e = new ConstantNode(Boolean.valueOf(t.image));
     }
   )
   {

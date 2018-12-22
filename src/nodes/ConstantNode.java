@@ -2,19 +2,18 @@ package nodes;
 
 public class ConstantNode extends ExpressionNode {
 
-	public ConstantNode(Object value, int type) {
+	Object value;
+
+	public ConstantNode(Object value) {
 		// TODO Auto-generated constructor stub
 
-		if (type == 2) { /// for remove " "
+		if (value instanceof String) { /// for remove " "
 			String temp = (String) value;
 			value = temp.substring(1, temp.length() - 1);
 		}
+		
 		this.value = value;
-		this.type = type;
 	}
-
-	Object value;
-	int type;
 
 	public Object getValue() {
 		return value;
@@ -32,10 +31,6 @@ public class ConstantNode extends ExpressionNode {
 
 	public Object execute(Context context) {
 		return value;
-	}
-
-	public int getType() {
-		return type;
 	}
 
 }

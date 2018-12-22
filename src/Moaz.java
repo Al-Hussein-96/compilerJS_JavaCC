@@ -730,19 +730,19 @@ JSExpression AssignmentExpression() :
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
     case INTEGER_LITERAL:
       t = jj_consume_token(INTEGER_LITERAL);
-      e = new ConstantNode(t.image, 0);
+      e = new ConstantNode(Integer.valueOf(t.image));
       break;
     case FLOATING_POINT_LITERAL:
       t = jj_consume_token(FLOATING_POINT_LITERAL);
-      e = new ConstantNode(t.image, 1);
+      e = new ConstantNode(Double.valueOf(t.image));
       break;
     case STRING_LITERAL:
       t = jj_consume_token(STRING_LITERAL);
-      e = new ConstantNode(t.image, 2);
+      e = new ConstantNode(t.image);
       break;
     case BOOLEAN_LITERAL:
       t = jj_consume_token(BOOLEAN_LITERAL);
-      e = new ConstantNode(t.image, 3);
+      e = new ConstantNode(Boolean.valueOf(t.image));
       break;
     default:
       jj_la1[27] = jj_gen;
