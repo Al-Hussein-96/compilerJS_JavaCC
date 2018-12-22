@@ -59,6 +59,9 @@ TOKEN :
 | < VAR_ : "var" | "let">
 | < Break : "break" >
 | < Continue : "continue" >
+| < Switch : "switch" >
+| < Case : "case" >
+| < Default_ : "default" >
 }
 
 TOKEN :
@@ -152,11 +155,96 @@ SyntaxTreeNode SingleOP() :
   | n = printstmt()
   | n = Break()
   | n = Continue()
+  | n = Switch() 
   )
   {
     return n;
   }
 }
+
+SyntaxTreeNode Switch() :
+{
+  SwitchNode n = new SwitchNode();
+  SyntaxTreeNode c = null;
+  Token t;
+}
+{
+  < Switch > <LP > t = < VAR >   < RP >
+  < LB >
+  (
+    c = Case()
+    {
+      n.addChild(c);
+    }
+  )*
+  (
+    c = Default()
+    {
+      n.addChild(c);
+    }
+  )?
+  (
+    c = Case()
+    {
+      n.addChild(c);
+    }
+  )*
+  < RB >
+  {
+    n.setNameVar(t.image);
+    return n;
+  }
+}
+
+
+
+SyntaxTreeNode Case() :
+{
+  CaseNode n = new CaseNode();
+  SyntaxTreeNode c = null;
+}
+{
+  < Case > c = E() < COLON >
+  {
+    n.addChild(c);
+  }
+  (
+    (
+      < LB > c = block() < RB >
+    | 
+      c = SingleOP()
+    )
+    {
+      n.addChild(c);
+    }
+  )*
+  {
+    return n;
+  }
+}
+
+SyntaxTreeNode Default() :
+{
+  DefaultNode n = new DefaultNode();
+  SyntaxTreeNode c = null;
+}
+{
+  < Default_ > < COLON >
+  (
+    (
+      < LB > c = block() < RB >
+    | 
+      c = SingleOP()
+    )
+    {
+      n.addChild(c);
+    }
+  )*
+  {
+    return n;
+  }
+}
+
 
 SyntaxTreeNode Continue() :
 {

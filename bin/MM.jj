@@ -56,7 +56,12 @@ TOKEN :
 | < WHILE : "while" >
 | < READ : ">>" >
 | < PRINT : "console.log"| "print" >
-| < VAR_ : "var" >
+| < VAR_ : "var" | "let">
+| < Break : "break" >
+| < Continue : "continue" >
+| < Switch : "switch" >
+| < Case : "case" >
+| < Default_ : "default" >
 }
 
 TOKEN :
@@ -83,7 +88,7 @@ TOKEN :
 TOKEN : /* LITERALS */
 {
   < INTEGER_LITERAL: <DECIMAL_LITERAL> >
-| < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
+| < #DECIMAL_LITERAL: (["1"-"9"] (["0"-"9"])*) | "0"  >
 | < FLOATING_POINT_LITERAL: (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? | "." (["0"-"9"])+ (<EXPONENT>)? | (["0"-"9"])+ (<EXPONENT>)? >
 | < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
 | < STRING_LITERAL:
@@ -148,7 +153,115 @@ SyntaxTreeNode SingleOP() :
   | n = whilestmt()
   | n = ifstmt()
   | n = printstmt()
+  | n = Break()
+  | n = Continue()
+  | n = Switch() 
   )
+  {
+    return n;
+  }
+}
+
+SyntaxTreeNode Switch() :
+{
+  SwitchNode n = new SwitchNode();
+  SyntaxTreeNode c = null;
+  Token t;
+}
+{
+  < Switch > <LP > t = < VAR >   < RP >
+  < LB >
+  (
+    c = Case()
+    {
+      n.addChild(c);
+    }
+  )*
+  (
+    c = Default()
+    {
+      n.addChild(c);
+    }
+  )?
+  (
+    c = Case()
+    {
+      n.addChild(c);
+    }
+  )*
+  < RB >
+  {
+    n.setNameVar(t.image);
+    return n;
+  }
+}
+
+
+
+SyntaxTreeNode Case() :
+{
+  CaseNode n = new CaseNode();
+  SyntaxTreeNode c = null;
+}
+{
+  < Case > c = E() < COLON >
+  {
+    n.addChild(c);
+  }
+  (
+    (
+      < LB > c = block() < RB >
+    | 
+      c = SingleOP()
+    )
+    {
+      n.addChild(c);
+    }
+  )*
+  {
+    return n;
+  }
+}
+
+SyntaxTreeNode Default() :
+{
+  DefaultNode n = new DefaultNode();
+  SyntaxTreeNode c = null;
+}
+{
+  < Default_ > < COLON >
+  (
+    (
+      < LB > c = block() < RB >
+    | 
+      c = SingleOP()
+    )
+    {
+      n.addChild(c);
+    }
+  )*
+  {
+    return n;
+  }
+}
+
+
+SyntaxTreeNode Continue() :
+{
+  ContinueNode n = new ContinueNode();
+}
+{
+  < Continue > < SEMI >
+  {
+    return n;
+  }
+}
+SyntaxTreeNode Break() :
+{
+  BreakNode n = new BreakNode();
+}
+{
+  < Break > < SEMI >
   {
     return n;
   }
@@ -237,7 +350,7 @@ AssignNode assignstmt() :
   Token t1 ,t2;
 }
 {
-  t1 = < VAR > (t2 = < ALLASSIGN >) n = E() 
+  t1 = < VAR > (t2 = < ALLASSIGN > | t2 = < ASSIGN >) n = E() 
   {
     res.setVariable(t1.image);
 	res.setOp(t2.image);
@@ -260,7 +373,7 @@ ForNode forstmt() :
 }
 {
   (
-    < FOR >  < LP > c1 = assignstmt() c2 = E() < SEMI > c3 = E()  < RP >
+    < FOR >  < LP > (c1 = Declaration() | < SEMI >) (c2 = E())? < SEMI > (c3 = assignstmt())?  < RP >
     {
       res.addChild(c1);
       res.addChild(c2);
@@ -293,11 +406,7 @@ WhileNode whilestmt() :
     {
       res.addChild(c);
     }
-    (
-      < LB > c = block() < RB >
-    | 
-      c = SingleOP()
-    )
+    ( < LB > c = block() < RB > |  c = SingleOP())
     {
       res.addChild(c);
     }
@@ -674,22 +783,22 @@ ExpressionNode LiteralExpression() :
   (
     t = < INTEGER_LITERAL >
     {
-      e = new ConstantNode(t.image, 0);
+      e = new ConstantNode(Integer.valueOf(t.image));
     }
   | 
     t = < FLOATING_POINT_LITERAL >
     {
-      e = new ConstantNode(t.image, 1);
+      e = new ConstantNode(Double.valueOf(t.image));
     }
   | 
     t = < STRING_LITERAL >
     {
-      e = new ConstantNode(t.image, 2);
+      e = new ConstantNode(t.image);
     }
   | 
     t = < BOOLEAN_LITERAL >
     {
-      e = new ConstantNode(t.image, 3);
+      e = new ConstantNode(Boolean.valueOf(t.image));
     }
   )
   {
