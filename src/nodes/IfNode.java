@@ -10,12 +10,12 @@ public class IfNode extends SyntaxTreeNode {
 		if(type==0 && (Integer)ob==0)bo=false;
 		if(type==1 && (Double)ob==0)bo=false;
 		if(type==3 && (Boolean)ob==false)bo=false;
-
+		Object res =null;
 		if (bo)
-			children.get(1).execute(context);
+			res = children.get(1).execute(context);
 		else if (children.size() > 2)
-			children.get(2).execute(context);
-		return null;
+			res = children.get(2).execute(context);
+		return res;
 	}
 
 	@Override
@@ -27,3 +27,8 @@ public class IfNode extends SyntaxTreeNode {
 	
 
 }
+
+
+
+
+

@@ -14,22 +14,35 @@ public class ForNode extends SyntaxTreeNode {
 
 	@Override
 	public Object execute(Context context) {
-		double v = (Double)children.get(0).execute(context);
-		context.getVars().put(variable, v);
-		while(true) {
-			if ((Double)children.get(2).execute(context) > 0)
-			{
-				if (v > (Double)children.get(1).execute(context))
+		if(children.get(0)!=null)
+			children.get(0).execute(context);
+		Object ob;
+		boolean bo = true;	
+		if(children.get(1)!=null){
+			ob = children.get(1).execute(context);
+		    bo = getSolve(ob);	
+		}
+		while(bo){
+			Object object = children.get(3).execute(context);
+			if(object!=null && object instanceof String)
+				if(((String)object).equals("Break"))
 					break;
-			}else {
-				if (v < (Double)children.get(1).execute(context))
-					break;
+			if(children.get(2)!=null)
+				children.get(2).execute(context);
+			if(children.get(1)!=null){
+				ob = children.get(1).execute(context);
+			    bo = getSolve(ob);	
 			}
-			children.get(3).execute(context);
-			v += (Double)children.get(2).execute(context);
-			context.getVars().put(variable, v);
 		}
 		return null;
+	}
+	private boolean getSolve(Object ob){
+		int type = getType(ob);
+		boolean bo= true;
+		if(type==0 && (Integer)ob==0)bo=false;
+		if(type==1 && (Double)ob==0)bo=false;
+		if(type==3 && (Boolean)ob==false)bo=false;
+		return bo;
 	}
 
 	@Override
@@ -40,3 +53,4 @@ public class ForNode extends SyntaxTreeNode {
 
 
 }
+

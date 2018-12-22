@@ -7,7 +7,10 @@ public class WhileNode extends SyntaxTreeNode {
 	    Object ob = children.get(0).execute(context);
 		boolean bo = getSolve(context, ob);		
 		while(bo){
-			children.get(1).execute(context);
+			Object object = children.get(1).execute(context);;
+			if(object!=null && object instanceof String)
+				if(((String)object).equals("Break"))
+					break;
 			ob = children.get(0).execute(context);
 		    bo = getSolve(context, ob);	
 		}
@@ -15,7 +18,6 @@ public class WhileNode extends SyntaxTreeNode {
 	}
 
 	private boolean getSolve(Context context, Object ob){
-	    ob = children.get(0).execute(context);
 		int type = getType(ob);
 		boolean bo= true;
 		if(type==0 && (Integer)ob==0)bo=false;

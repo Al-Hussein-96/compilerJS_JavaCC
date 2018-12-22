@@ -55,45 +55,49 @@ public interface MoazConstants {
   /** RegularExpression Id. */
   int VAR_ = 27;
   /** RegularExpression Id. */
-  int LP = 28;
+  int Break = 28;
   /** RegularExpression Id. */
-  int RP = 29;
+  int Continue = 29;
   /** RegularExpression Id. */
-  int LB = 30;
+  int LP = 30;
   /** RegularExpression Id. */
-  int RB = 31;
+  int RP = 31;
   /** RegularExpression Id. */
-  int VAR = 32;
+  int LB = 32;
   /** RegularExpression Id. */
-  int INCR = 33;
+  int RB = 33;
   /** RegularExpression Id. */
-  int DECR = 34;
+  int VAR = 34;
   /** RegularExpression Id. */
-  int PLUSASSIGN = 35;
+  int INCR = 35;
   /** RegularExpression Id. */
-  int MINUSASSIGN = 36;
+  int DECR = 36;
   /** RegularExpression Id. */
-  int MULTASSIGN = 37;
+  int PLUSASSIGN = 37;
   /** RegularExpression Id. */
-  int DIVASSIGN = 38;
+  int MINUSASSIGN = 38;
   /** RegularExpression Id. */
-  int REMASSIGN = 39;
+  int MULTASSIGN = 39;
   /** RegularExpression Id. */
-  int INTEGER_LITERAL = 40;
+  int DIVASSIGN = 40;
   /** RegularExpression Id. */
-  int DECIMAL_LITERAL = 41;
+  int REMASSIGN = 41;
   /** RegularExpression Id. */
-  int FLOATING_POINT_LITERAL = 42;
+  int INTEGER_LITERAL = 42;
   /** RegularExpression Id. */
-  int EXPONENT = 43;
+  int DECIMAL_LITERAL = 43;
   /** RegularExpression Id. */
-  int STRING_LITERAL = 44;
+  int FLOATING_POINT_LITERAL = 44;
   /** RegularExpression Id. */
-  int ESCAPE_SEQUENCE = 45;
+  int EXPONENT = 45;
   /** RegularExpression Id. */
-  int BOOLEAN_LITERAL = 46;
+  int STRING_LITERAL = 46;
   /** RegularExpression Id. */
-  int NULL_LITERAL = 47;
+  int ESCAPE_SEQUENCE = 47;
+  /** RegularExpression Id. */
+  int BOOLEAN_LITERAL = 48;
+  /** RegularExpression Id. */
+  int NULL_LITERAL = 49;
 
   /** Lexical state. */
   int DEFAULT = 0;
@@ -127,7 +131,9 @@ public interface MoazConstants {
     "\"while\"",
     "\">>\"",
     "<PRINT>",
-    "\"var\"",
+    "<VAR_>",
+    "\"break\"",
+    "\"continue\"",
     "\"(\"",
     "\")\"",
     "\"{\"",

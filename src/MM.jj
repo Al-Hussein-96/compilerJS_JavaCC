@@ -56,7 +56,9 @@ TOKEN :
 | < WHILE : "while" >
 | < READ : ">>" >
 | < PRINT : "console.log"| "print" >
-| < VAR_ : "var" >
+| < VAR_ : "var" | "let">
+| < Break : "break" >
+| < Continue : "continue" >
 }
 
 TOKEN :
@@ -83,7 +85,7 @@ TOKEN :
 TOKEN : /* LITERALS */
 {
   < INTEGER_LITERAL: <DECIMAL_LITERAL> >
-| < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
+| < #DECIMAL_LITERAL: (["1"-"9"] (["0"-"9"])*) | "0"  >
 | < FLOATING_POINT_LITERAL: (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? | "." (["0"-"9"])+ (<EXPONENT>)? | (["0"-"9"])+ (<EXPONENT>)? >
 | < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
 | < STRING_LITERAL:
@@ -148,7 +150,30 @@ SyntaxTreeNode SingleOP() :
   | n = whilestmt()
   | n = ifstmt()
   | n = printstmt()
+  | n = Break()
+  | n = Continue()
   )
+  {
+    return n;
+  }
+}
+
+SyntaxTreeNode Continue() :
+{
+  ContinueNode n = new ContinueNode();
+}
+{
+  < Continue > < SEMI >
+  {
+    return n;
+  }
+}
+SyntaxTreeNode Break() :
+{
+  BreakNode n = new BreakNode();
+}
+{
+  < Break > < SEMI >
   {
     return n;
   }
@@ -237,7 +262,7 @@ AssignNode assignstmt() :
   Token t1 ,t2;
 }
 {
-  t1 = < VAR > (t2 = < ALLASSIGN >) n = E() 
+  t1 = < VAR > (t2 = < ALLASSIGN > | t2 = < ASSIGN >) n = E() 
   {
     res.setVariable(t1.image);
 	res.setOp(t2.image);
@@ -260,7 +285,7 @@ ForNode forstmt() :
 }
 {
   (
-    < FOR >  < LP > c1 = assignstmt() c2 = E() < SEMI > c3 = E()  < RP >
+    < FOR >  < LP > (c1 = Declaration() | < SEMI >) (c2 = E())? < SEMI > (c3 = assignstmt())?  < RP >
     {
       res.addChild(c1);
       res.addChild(c2);

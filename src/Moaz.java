@@ -30,6 +30,8 @@ public class Moaz implements MoazConstants {
       case WHILE:
       case PRINT:
       case VAR_:
+      case Break:
+      case Continue:
       case VAR:
         ;
         break;
@@ -61,11 +63,33 @@ public class Moaz implements MoazConstants {
     case PRINT:
       n = printstmt();
       break;
+    case Break:
+      n = Break();
+      break;
+    case Continue:
+      n = Continue();
+      break;
     default:
       jj_la1[1] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
+    {if (true) return n;}
+    throw new Error("Missing return statement in function");
+  }
+
+  static final public SyntaxTreeNode Continue() throws ParseException {
+  ContinueNode n = new ContinueNode();
+    jj_consume_token(Continue);
+    jj_consume_token(SEMI);
+    {if (true) return n;}
+    throw new Error("Missing return statement in function");
+  }
+
+  static final public SyntaxTreeNode Break() throws ParseException {
+  BreakNode n = new BreakNode();
+    jj_consume_token(Break);
+    jj_consume_token(SEMI);
     {if (true) return n;}
     throw new Error("Missing return statement in function");
   }
@@ -116,14 +140,14 @@ ConditionNode condition() :
       label_2:
       while (true) {
         switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-        case 48:
+        case 50:
           ;
           break;
         default:
           jj_la1[2] = jj_gen;
           break label_2;
         }
-        jj_consume_token(48);
+        jj_consume_token(50);
         n = Variable();
          b.addChild(n);
       }
@@ -164,7 +188,18 @@ ConditionNode condition() :
   SyntaxTreeNode n;
   Token t1 ,t2;
     t1 = jj_consume_token(VAR);
-    t2 = jj_consume_token(ALLASSIGN);
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case ALLASSIGN:
+      t2 = jj_consume_token(ALLASSIGN);
+      break;
+    case ASSIGN:
+      t2 = jj_consume_token(ASSIGN);
+      break;
+    default:
+      jj_la1[5] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
     n = E();
     res.setVariable(t1.image);
         res.setOp(t2.image);
@@ -183,10 +218,41 @@ ConditionNode condition() :
   SyntaxTreeNode c4 = null;
     jj_consume_token(FOR);
     jj_consume_token(LP);
-    c1 = assignstmt();
-    c2 = E();
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case VAR_:
+    case VAR:
+      c1 = Declaration();
+      break;
+    case SEMI:
+      jj_consume_token(SEMI);
+      break;
+    default:
+      jj_la1[6] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case LP:
+    case VAR:
+    case INTEGER_LITERAL:
+    case FLOATING_POINT_LITERAL:
+    case STRING_LITERAL:
+    case BOOLEAN_LITERAL:
+      c2 = E();
+      break;
+    default:
+      jj_la1[7] = jj_gen;
+      ;
+    }
     jj_consume_token(SEMI);
-    c3 = E();
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case VAR:
+      c3 = assignstmt();
+      break;
+    default:
+      jj_la1[8] = jj_gen;
+      ;
+    }
     jj_consume_token(RP);
       res.addChild(c1);
       res.addChild(c2);
@@ -202,11 +268,13 @@ ConditionNode condition() :
     case WHILE:
     case PRINT:
     case VAR_:
+    case Break:
+    case Continue:
     case VAR:
       c4 = SingleOP();
       break;
     default:
-      jj_la1[5] = jj_gen;
+      jj_la1[9] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -236,11 +304,13 @@ ConditionNode condition() :
     case WHILE:
     case PRINT:
     case VAR_:
+    case Break:
+    case Continue:
     case VAR:
       c = SingleOP();
       break;
     default:
-      jj_la1[6] = jj_gen;
+      jj_la1[10] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -270,11 +340,13 @@ ConditionNode condition() :
     case WHILE:
     case PRINT:
     case VAR_:
+    case Break:
+    case Continue:
     case VAR:
       c = SingleOP();
       break;
     default:
-      jj_la1[7] = jj_gen;
+      jj_la1[11] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -293,18 +365,20 @@ ConditionNode condition() :
       case WHILE:
       case PRINT:
       case VAR_:
+      case Break:
+      case Continue:
       case VAR:
         c = SingleOP();
         break;
       default:
-        jj_la1[8] = jj_gen;
+        jj_la1[12] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
       res.addChild(c);
       break;
     default:
-      jj_la1[9] = jj_gen;
+      jj_la1[13] = jj_gen;
       ;
     }
     {if (true) return res;}
@@ -372,15 +446,15 @@ JSExpression AssignmentExpression() :
   ExpressionNode e3;
     e = OrExpression();
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case 49:
-      t = jj_consume_token(49);
+    case 51:
+      t = jj_consume_token(51);
       e2 = E();
       jj_consume_token(COLON);
       e3 = E();
       e = new ExpressionNode(t.image, e, e2, e3);
       break;
     default:
-      jj_la1[10] = jj_gen;
+      jj_la1[14] = jj_gen;
       ;
     }
     {if (true) return e;}
@@ -395,14 +469,14 @@ JSExpression AssignmentExpression() :
     label_3:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case 50:
+      case 52:
         ;
         break;
       default:
-        jj_la1[11] = jj_gen;
+        jj_la1[15] = jj_gen;
         break label_3;
       }
-      t = jj_consume_token(50);
+      t = jj_consume_token(52);
       e2 = AndExpression();
       e = new ExpressionNode(t.image, e, e2);
     }
@@ -418,14 +492,14 @@ JSExpression AssignmentExpression() :
     label_4:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case 51:
+      case 53:
         ;
         break;
       default:
-        jj_la1[12] = jj_gen;
+        jj_la1[16] = jj_gen;
         break label_4;
       }
-      t = jj_consume_token(51);
+      t = jj_consume_token(53);
       e2 = BitwiseOrExpression();
       e = new ExpressionNode(t.image, e, e2);
     }
@@ -441,14 +515,14 @@ JSExpression AssignmentExpression() :
     label_5:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case 52:
+      case 54:
         ;
         break;
       default:
-        jj_la1[13] = jj_gen;
+        jj_la1[17] = jj_gen;
         break label_5;
       }
-      t = jj_consume_token(52);
+      t = jj_consume_token(54);
       e2 = BitwiseXorExpression();
       e = new ExpressionNode(t.image, e, e2);
     }
@@ -464,14 +538,14 @@ JSExpression AssignmentExpression() :
     label_6:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case 53:
+      case 55:
         ;
         break;
       default:
-        jj_la1[14] = jj_gen;
+        jj_la1[18] = jj_gen;
         break label_6;
       }
-      t = jj_consume_token(53);
+      t = jj_consume_token(55);
       e2 = BitwiseAndExpression();
       e = new ExpressionNode(t.image, e, e2);
     }
@@ -487,14 +561,14 @@ JSExpression AssignmentExpression() :
     label_7:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case 54:
+      case 56:
         ;
         break;
       default:
-        jj_la1[15] = jj_gen;
+        jj_la1[19] = jj_gen;
         break label_7;
       }
-      t = jj_consume_token(54);
+      t = jj_consume_token(56);
       e2 = EqualityExpression();
       e = new ExpressionNode(t.image, e, e2);
     }
@@ -510,23 +584,23 @@ JSExpression AssignmentExpression() :
     label_8:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case 55:
-      case 56:
+      case 57:
+      case 58:
         ;
         break;
       default:
-        jj_la1[16] = jj_gen;
+        jj_la1[20] = jj_gen;
         break label_8;
       }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case 55:
-        t = jj_consume_token(55);
+      case 57:
+        t = jj_consume_token(57);
         break;
-      case 56:
-        t = jj_consume_token(56);
+      case 58:
+        t = jj_consume_token(58);
         break;
       default:
-        jj_la1[17] = jj_gen;
+        jj_la1[21] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -545,31 +619,31 @@ JSExpression AssignmentExpression() :
     label_9:
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case 57:
-      case 58:
       case 59:
       case 60:
+      case 61:
+      case 62:
         ;
         break;
       default:
-        jj_la1[18] = jj_gen;
+        jj_la1[22] = jj_gen;
         break label_9;
       }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case 57:
-        t = jj_consume_token(57);
-        break;
-      case 58:
-        t = jj_consume_token(58);
-        break;
       case 59:
         t = jj_consume_token(59);
         break;
       case 60:
         t = jj_consume_token(60);
         break;
+      case 61:
+        t = jj_consume_token(61);
+        break;
+      case 62:
+        t = jj_consume_token(62);
+        break;
       default:
-        jj_la1[19] = jj_gen;
+        jj_la1[23] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -589,26 +663,26 @@ JSExpression AssignmentExpression() :
     while (true) {
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case READ:
-      case 61:
-      case 62:
+      case 63:
+      case 64:
         ;
         break;
       default:
-        jj_la1[20] = jj_gen;
+        jj_la1[24] = jj_gen;
         break label_10;
       }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case 61:
-        t = jj_consume_token(61);
+      case 63:
+        t = jj_consume_token(63);
         break;
       case READ:
         t = jj_consume_token(READ);
         break;
-      case 62:
-        t = jj_consume_token(62);
+      case 64:
+        t = jj_consume_token(64);
         break;
       default:
-        jj_la1[21] = jj_gen;
+        jj_la1[25] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -632,7 +706,7 @@ JSExpression AssignmentExpression() :
         ;
         break;
       default:
-        jj_la1[22] = jj_gen;
+        jj_la1[26] = jj_gen;
         break label_11;
       }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -643,7 +717,7 @@ JSExpression AssignmentExpression() :
         t = jj_consume_token(SUB);
         break;
       default:
-        jj_la1[23] = jj_gen;
+        jj_la1[27] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -664,11 +738,11 @@ JSExpression AssignmentExpression() :
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
       case MULTIPLY:
       case DIV:
-      case 63:
+      case 65:
         ;
         break;
       default:
-        jj_la1[24] = jj_gen;
+        jj_la1[28] = jj_gen;
         break label_12;
       }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -678,11 +752,11 @@ JSExpression AssignmentExpression() :
       case DIV:
         t = jj_consume_token(DIV);
         break;
-      case 63:
-        t = jj_consume_token(63);
+      case 65:
+        t = jj_consume_token(65);
         break;
       default:
-        jj_la1[25] = jj_gen;
+        jj_la1[29] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -717,7 +791,7 @@ JSExpression AssignmentExpression() :
       {if (true) return v;}
       break;
     default:
-      jj_la1[26] = jj_gen;
+      jj_la1[30] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -745,7 +819,7 @@ JSExpression AssignmentExpression() :
       e = new ConstantNode(Boolean.valueOf(t.image));
       break;
     default:
-      jj_la1[27] = jj_gen;
+      jj_la1[31] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -763,18 +837,23 @@ JSExpression AssignmentExpression() :
   static public Token jj_nt;
   static private int jj_ntk;
   static private int jj_gen;
-  static final private int[] jj_la1 = new int[28];
+  static final private int[] jj_la1 = new int[32];
   static private int[] jj_la1_0;
   static private int[] jj_la1_1;
+  static private int[] jj_la1_2;
   static {
       jj_la1_init_0();
       jj_la1_init_1();
+      jj_la1_init_2();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0xd500000,0xd500000,0x0,0x8000000,0x20000,0x4d500000,0x4d500000,0x4d500000,0x4d500000,0x200000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x2000000,0x2000000,0x60,0x60,0x180,0x180,0x10000000,0x0,};
+      jj_la1_0 = new int[] {0x3d500000,0x3d500000,0x0,0x8000000,0x20000,0x30000,0x8040000,0x40000000,0x0,0x3d500000,0x3d500000,0x3d500000,0x3d500000,0x200000,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x2000000,0x2000000,0x60,0x60,0x180,0x180,0x40000000,0x0,};
    }
    private static void jj_la1_init_1() {
-      jj_la1_1 = new int[] {0x1,0x1,0x10000,0x1,0x0,0x1,0x1,0x1,0x1,0x0,0x20000,0x40000,0x80000,0x100000,0x200000,0x400000,0x1800000,0x1800000,0x1e000000,0x1e000000,0x60000000,0x60000000,0x0,0x0,0x80000000,0x80000000,0x5501,0x5500,};
+      jj_la1_1 = new int[] {0x4,0x4,0x40000,0x4,0x0,0x0,0x4,0x15404,0x4,0x5,0x5,0x5,0x5,0x0,0x80000,0x100000,0x200000,0x400000,0x800000,0x1000000,0x6000000,0x6000000,0x78000000,0x78000000,0x80000000,0x80000000,0x0,0x0,0x0,0x0,0x15404,0x15400,};
+   }
+   private static void jj_la1_init_2() {
+      jj_la1_2 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x1,0x1,0x0,0x0,0x2,0x2,0x0,0x0,};
    }
 
   /** Constructor with InputStream. */
@@ -795,7 +874,7 @@ JSExpression AssignmentExpression() :
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 32; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -809,7 +888,7 @@ JSExpression AssignmentExpression() :
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 32; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -826,7 +905,7 @@ JSExpression AssignmentExpression() :
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 32; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -836,7 +915,7 @@ JSExpression AssignmentExpression() :
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 32; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -852,7 +931,7 @@ JSExpression AssignmentExpression() :
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 32; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -861,7 +940,7 @@ JSExpression AssignmentExpression() :
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 28; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 32; i++) jj_la1[i] = -1;
   }
 
   static private Token jj_consume_token(int kind) throws ParseException {
@@ -912,12 +991,12 @@ JSExpression AssignmentExpression() :
   /** Generate ParseException. */
   static public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[64];
+    boolean[] la1tokens = new boolean[66];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 28; i++) {
+    for (int i = 0; i < 32; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
@@ -926,10 +1005,13 @@ JSExpression AssignmentExpression() :
           if ((jj_la1_1[i] & (1<<j)) != 0) {
             la1tokens[32+j] = true;
           }
+          if ((jj_la1_2[i] & (1<<j)) != 0) {
+            la1tokens[64+j] = true;
+          }
         }
       }
     }
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < 66; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
