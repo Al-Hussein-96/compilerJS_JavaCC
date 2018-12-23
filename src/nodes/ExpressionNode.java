@@ -7,6 +7,7 @@ import org.omg.CORBA.OMGVMCID;
 public class ExpressionNode extends SyntaxTreeNode {
 
 	String operator;
+	boolean isUnary = false;
 
 	public ExpressionNode() {
 		// TODO Auto-generated constructor stub
@@ -17,6 +18,12 @@ public class ExpressionNode extends SyntaxTreeNode {
 		children.add(child1);
 		children.add(child2);
 	}
+	
+	public ExpressionNode(String operator, SyntaxTreeNode child1) {
+		this.operator = operator;
+		children.add(child1);
+		isUnary = true;
+	}
 
 	public ExpressionNode(String operator, SyntaxTreeNode child1, SyntaxTreeNode child2, SyntaxTreeNode child3) {
 		this.operator = operator;
@@ -24,7 +31,51 @@ public class ExpressionNode extends SyntaxTreeNode {
 		children.add(child2);
 		children.add(child3);
 	}
-
+	public Object UnaryExpression(String operator ,Context context) {
+        Object res = children.get(0).execute(context);
+        if(operator == null) return res;
+        int type1 = getType(res);
+		switch (operator) {
+		case "++":
+		    if ( type1 == 0)
+				res = (Integer)res + 1;
+			else if (type1 == 1)
+				res = (Double)res + 1;
+            else
+               res = null; 
+		    if((children.get(0) != null) && (children.get(0) instanceof VariableNode)){
+				VariableNode v = (VariableNode)children.get(0);
+				if(res!=null)
+					context.getVars().put(v.name, res);
+			}
+		    break;
+        case "--":
+            if ( type1 == 0)
+				res = (Integer)res - 1;
+			else if (type1 == 1)
+				res = (Double)res - 1;
+            else
+               res = null; 
+            if((children.get(0) != null) && (children.get(0) instanceof VariableNode)){
+				VariableNode v = (VariableNode)children.get(0);
+				if(res!=null)
+					context.getVars().put(v.name, res);
+			}
+		    break;
+        case "!":
+            res = getSolve(res);
+            res = !((Boolean)res);
+		    break;
+        case "~":
+            if ( type1 == 0)
+				res = ~ ((Integer)res );
+            else
+               res = null; 
+		    break;
+		}
+		return res;
+	}
+	
 	public String getOperator() {
 		return operator;
 	}
@@ -36,7 +87,9 @@ public class ExpressionNode extends SyntaxTreeNode {
 
 	@Override
 	public Object execute(Context context) {
-
+		if(isUnary){
+			return UnaryExpression(operator, context);
+		}
 		Object d1 =  children.get(0).execute(context);
 		Object d2 =  children.get(1).execute(context);
 		
@@ -241,12 +294,12 @@ public class ExpressionNode extends SyntaxTreeNode {
 			res = null;
 			if ( type1 == 0){
 				if(type2==0)res = (Integer)d1 == (Integer)d2;
-				if(type2==1)res = null;
+				if(type2==1)res = ((Integer)d1).equals((Double)d2);
 				if(type2==2)res = String.valueOf((Integer)d1) == (String)d2;
 				if(type2==3)res = (Integer)d1 == ((Boolean)d2== true?1:0);
 			}
 			if (type1 == 1){
-				if(type2==0)res = null;
+				if(type2==0)res = ((Double)d1).equals((Integer)d2);
 				if(type2==1)res = (Double)d1 == (Double)d2;
 				if(type2==2)res = String.valueOf((Double)d1) == (String)d2;
 				if(type2==3)res = (Double)d1 == ((Boolean)d2== true?1:0);
@@ -268,12 +321,12 @@ public class ExpressionNode extends SyntaxTreeNode {
 			res = null;
 			if ( type1 == 0){
 				if(type2==0)res = (Integer)d1 != (Integer)d2;
-				if(type2==1)res = null;
+				if(type2==1)res = !((Integer)d1).equals((Double)d2);;
 				if(type2==2)res = String.valueOf((Integer)d1) != (String)d2;
 				if(type2==3)res = (Integer)d1 != ((Boolean)d2== true?1:0);
 			}
 			if (type1 == 1){
-				if(type2==0)res = null;
+				if(type2==0)res = !((Double)d1).equals((Integer)d2);;
 				if(type2==1)res = (Double)d1 != (Double)d2;
 				if(type2==2)res = String.valueOf((Double)d1) != (String)d2;
 				if(type2==3)res = (Double)d1 != ((Boolean)d2== true?1:0);
@@ -311,29 +364,23 @@ public class ExpressionNode extends SyntaxTreeNode {
 			return res;
 		case "&&":
 			res = null;
-			boolean bo1 = getSolve(context, d1);
-			boolean bo2 = getSolve(context, d2);
+			boolean bo1 = getSolve(d1);
+			boolean bo2 = getSolve(d2);
 			res = bo1 && bo2;
 			return res;
 		case "||":
 			res = null;
-			bo1 = getSolve(context, d1);
-		    bo2 = getSolve(context, d2);
+			bo1 = getSolve(d1);
+		    bo2 = getSolve(d2);
 			res = bo1 || bo2;
 			return res;
 		}
 		
 		return null;
 	}
-	private boolean getSolve(Context context, Object ob){
-		int type = getType(ob);
-		boolean bo= true;
-		if(type==0 && ((Integer)ob).equals(0))bo=false;
-		if(type==1 && (Double)ob==0)bo=false;
-		if(type==3 && (Boolean)ob==false)bo=false;
-		return bo;
-	}
+	
 
+	
 	@Override
 	protected String getName() {
 		// TODO Auto-generated method stub

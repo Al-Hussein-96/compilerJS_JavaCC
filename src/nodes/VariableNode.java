@@ -32,6 +32,5 @@ public class VariableNode extends ExpressionNode {
 			return 0.0;
 		}
 		
-	}
-	
+	}	
 }

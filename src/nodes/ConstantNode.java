@@ -32,5 +32,4 @@ public class ConstantNode extends ExpressionNode {
 	public Object execute(Context context) {
 		return value;
 	}
-
 }

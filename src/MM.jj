@@ -148,104 +148,33 @@ SyntaxTreeNode SingleOP() :
 }
 {
   (
-    n = Declaration()
+   LOOKAHEAD(2) n = Declaration()
+  | n = Switch()
   | n = forstmt() 
   | n = whilestmt()
   | n = ifstmt()
   | n = printstmt()
   | n = Break()
   | n = Continue()
-  | n = Switch() 
+  | n = Unary()
+
   )
   {
     return n;
   }
 }
 
-SyntaxTreeNode Switch() :
+
+SyntaxTreeNode Unary() :
 {
-  SwitchNode n = new SwitchNode();
-  SyntaxTreeNode c = null;
-  Token t;
+  SyntaxTreeNode n;
 }
 {
-  < Switch > <LP > t = < VAR >   < RP >
-  < LB >
-  (
-    c = Case()
-    {
-      n.addChild(c);
-    }
-  )*
-  (
-    c = Default()
-    {
-      n.addChild(c);
-    }
-  )?
-  (
-    c = Case()
-    {
-      n.addChild(c);
-    }
-  )*
-  < RB >
-  {
-    n.setNameVar(t.image);
-    return n;
-  }
-}
-
-
-
-SyntaxTreeNode Case() :
-{
-  CaseNode n = new CaseNode();
-  SyntaxTreeNode c = null;
-}
-{
-  < Case > c = E() < COLON >
-  {
-    n.addChild(c);
-  }
-  (
-    (
-      < LB > c = block() < RB >
-    | 
-      c = SingleOP()
-    )
-    {
-      n.addChild(c);
-    }
-  )*
+  n = UnaryExpression() < SEMI >
   {
     return n;
   }
 }
-
-SyntaxTreeNode Default() :
-{
-  DefaultNode n = new DefaultNode();
-  SyntaxTreeNode c = null;
-}
-{
-  < Default_ > < COLON >
-  (
-    (
-      < LB > c = block() < RB >
-    | 
-      c = SingleOP()
-    )
-    {
-      n.addChild(c);
-    }
-  )*
-  {
-    return n;
-  }
-}
-
-
 SyntaxTreeNode Continue() :
 {
   ContinueNode n = new ContinueNode();
@@ -359,8 +288,97 @@ AssignNode assignstmt() :
   }
 }
 
+/////////////////////////////////////// Switch statment ///////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////
 
-/////////////////////////////////////// For statment ////////////////////////////////////////
+SyntaxTreeNode Switch() :
+{
+  SwitchNode n = new SwitchNode();
+  SyntaxTreeNode c = null;
+  Token t;
+}
+{
+  < Switch > <LP > t = < VAR >   < RP >
+  < LB >
+  (
+    c = Case()
+    {
+      n.addChild(c);
+    }
+  )*
+  (
+    c = Default()
+    {
+      n.addChild(c);
+    }
+  )?
+  (
+    c = Case()
+    {
+      n.addChild(c);
+    }
+  )*
+  < RB >
+  {
+    n.setNameVar(t.image);
+    return n;
+  }
+}
+ 
+ 
+ 
+
+
+
+SyntaxTreeNode Case() :
+{
+  CaseNode n = new CaseNode();
+  SyntaxTreeNode c = null;
+}
+{
+  < Case > c = E() < COLON >
+  {
+    n.addChild(c);
+  }
+  (
+    (
+      < LB > c = block() < RB >
+    | 
+     c = block()
+    )
+    {
+      n.addChild(c);
+    }
+  )
+  {
+    return n;
+  }
+}
+
+
+SyntaxTreeNode Default() :
+{
+  DefaultNode n = new DefaultNode();
+  SyntaxTreeNode c = null;
+}
+{
+  < Default_ > < COLON >
+  (
+    (
+      < LB > c = block() < RB >
+    | 
+      c = block()
+    )
+    {
+      n.addChild(c);
+    }
+  )
+  {
+    return n;
+  }
+}
+
+/////////////////////////////////////// For statment //////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 ForNode forstmt() :
@@ -727,14 +745,14 @@ ExpressionNode MultiplicativeExpression() :
   ExpressionNode e2 = null;
 }
 {
-  e = N()
+  e = UnaryExpression()
   (
     (
       t = "*"
     | t = "/"
     | t = "%"
     )
-    e2 = N()
+    e2 = UnaryExpression()
     {
       e = new ExpressionNode(t.image, e, e2);
     }
@@ -742,6 +760,25 @@ ExpressionNode MultiplicativeExpression() :
   {
     return e;
   }
+}
+
+
+ExpressionNode UnaryExpression() :
+{
+  Token t = null;
+  ExpressionNode e = null;
+}
+{
+  ( (( t="!" | t="~" ) e=UnaryExpression()) | (t="-" e=UnaryExpression())
+  | (( t="++" | t="--" ) e=N() ) |( e=N() ( t="++" | t="--" )?)
+  )
+	{
+	    ExpressionNode res =null;
+	    if(t == null)
+	    	res=new ExpressionNode(null , e);
+	    else res=new ExpressionNode(t.image , e);
+	    return res;
+	}
 }
 
 ExpressionNode N() :
@@ -805,3 +842,7 @@ ExpressionNode LiteralExpression() :
     return e;
   }
 }
+
+
+
+

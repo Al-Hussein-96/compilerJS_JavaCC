@@ -30,4 +30,26 @@ public abstract class SyntaxTreeNode {
 		if(ob instanceof Boolean)return 3;
 		return -1;
 	}
+	public boolean getSolve(Object ob){
+		int type = getType(ob);
+		boolean bo= true;
+		if(type==0 && ((Integer)ob).equals(0))bo=false;
+		if(type==1 && (Double)ob==0)bo=false;
+		if(type==3 && (Boolean)ob==false)bo=false;
+		return bo;
+	}
 }
+
+/*
+x = 1;
+y = 0;
+z = 5;
+while(!y){
+x++;
+print(x+" "+z);
+if(x==z)y++;
+print(x+"   "+y);
+if(x>10)break;
+}
+*/
+
